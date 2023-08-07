@@ -2,11 +2,11 @@
   "name": "Cheems-Bot-MD",
   "version": "7.0.0",
   "description": "Automated whatsapp md bot created using nodejs and baileys lib",
-  "main": "index.js",
+  "main": "index_wabot.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node --max_old_space_size=700 index.js",
-    "start2": "pm2 start 'node index.js' --name zel --exp-backoff-restart-delay=100 && pm2 logs zel"
+    "start": "node index_wabot.js",
+    "start2": "pm2 start 'node --max_old_space_size=2024 index.js' --name zel --exp-backoff-restart-delay=100 && pm2 logs zel"
   },
   "keywords": [
     "termux",
@@ -28,11 +28,13 @@
     "anime-wallpaper": "^1.0.2",
     "awesome-phonenumber": "^2.64.0",
     "axios": "^0.24.0",
+    "cfonts": "^2.10.0",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0-rc.10",
     "child_process": "^1.0.2",
     "cookie": "^0.5.0",
     "crypto": "^1.0.1",
+    "discord.js": "^14.12.1",
     "emoji-api": "^1.0.2",
     "fake-useragent": "^1.0.1",
     "figlet": "^1.5.0",
@@ -78,6 +80,7 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "scrape-primbon": "^1.1.0",
+    "speedtest-net": "^2.2.0",
     "spinnies": "^0.5.1",
     "spotifydl-x": "^0.3.0",
     "syntax-error": "*",

@@ -26,20 +26,20 @@ global.ownerNumber = ["6281359391296@s.whatsapp.net"]
 global.ownerweb = "https://youtube.com/@DGXeon"
 global.websitex = "https://youtu.be/dRjLBzuSsN4"
 global.wagc = "https://chat.whatsapp.com/H5pTRObSv3sAcihLxO0mDF"
-global.themeemoji = '👨🏻‍💻'
+global.themeemoji = '🥀'
 global.wm = "Xeon Bot Inc."
 global.botscript = 'https://github.com/DGXeon/CheemsBot-MD7' //script link
 global.packname = "Sticker By"
 global.author = "Octopus Bot | https://bit.ly/m/octopus-bot"
 global.creator = "6281359391296@s.whatsapp.net"
-global.prefa = ['','!','.','#','&']
+global.prefa = ['!','.','#','&']
 global.hituet = 0
 
 //media target
-global.thum = fs.readFileSync("./XeonMedia/theme/oct.jpg") //ur thumb pic
-global.log0 = fs.readFileSync("./XeonMedia/theme/oct.jpg") //ur logo pic
-global.err4r = fs.readFileSync("./XeonMedia/theme/oct.jpg") //ur error pic
-global.thumb = fs.readFileSync("./XeonMedia/theme/oct.jpg") //ur thumb pic
+global.thum = fs.readFileSync("./assets/theme/oct.jpg") //ur thumb pic
+global.log0 = fs.readFileSync("./assets/theme/oct.jpg") //ur logo pic
+global.err4r = fs.readFileSync("./assets/theme/oct.jpg") //ur error pic
+global.thumb = fs.readFileSync("./assets/theme/oct.jpg") //ur thumb pic
 
 //menu image maker
 global.flaming = 'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&text='
@@ -60,12 +60,6 @@ global.mess = {
     wait: 'Ditunggu kak, masih proses...',
     linkm: 'Masukkan linknya dulu ya kak...',
     endLimit: 'Upss.. Batas/Limit Harian Anda Telah Habis, Batas Akan Direset Setiap 12 Jam.\n\nJika Kamu Ingin Memiliki Unlimited Batas Harian, Kamu Perlu Mendaftar Paket Premium',
-}
-
-global.limitawal = {
-    premium: "Infinity",
-    free: 10,
-    monayawal: 1000
 }
 
 let file = require.resolve(__filename)

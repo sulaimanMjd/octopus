@@ -16,7 +16,7 @@ const {
 const { color, bgcolor } = require('./lib/color')
 const colors = require('colors')
 const { uncache, nocache } = require('./lib/loader')
-const { start } = require('./lib/spinner')
+//const { start } = require('./lib/spinner')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep, reSize } = require('./lib/myfunc')
 
@@ -156,121 +156,95 @@ ppgroup = await OctopusBotzz.profilePictureUrl(anu.id, 'image')
 } catch (err) {
 ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 }
+
                 //welcome\\
-memb = metadata.participants.length
-XeonWlcm = await getBuffer(ppuser)
-XeonLft = await getBuffer(ppuser)
-                if (anu.action == 'add') {
-                const xeonbuffer = await getBuffer(ppuser)
-                let xeonName = num
-                const xtime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-	            const xdate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
-	            const xmembers = metadata.participants.length
-                let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "6281359391296-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: XeonWlcm, surface: 200, message: `${metadata.subject}`, orderTitle: 'octopus', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
-                xeonbody = `┌─❖=> *INFO*
+pepeUsr = await getBuffer(ppuser)
+memSek = metadata.participants.length
+if (anu.action == 'add') {
+  let xeonName = num
+  const xtime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+  const xdate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
+  messInfo = `┌─❖=> *INFO*
 │Tag Nama : @${xeonName.split("@")[0]}
 │Nomor : ${xeonName.split("@")[0]}
 │Bergabung di : ${metadata.subject}
 │Waktu Bergabung : ${xtime} ${xdate}
-│Total Member Sekarang : ${xmembers}
+│Total Member Sekarang : ${memSek}
 └───────────────┈ ⳹`
-let buttons = [
-{buttonId: `welkom`, buttonText: {displayText: 'Welcome 💐'}, type: 1}
-]
-let buttonMessage = {
-document: fs.readFileSync('./XeonMedia/theme/cheems.xlsx'),
-mimetype: docs,
-jpegThumbnail:XeonWlcm,
-mentions: [num],
-fileName: `${metadata.subject}`,
-fileLength: 99999999999999,
-caption: xeonbody,
-footer: `${botname}`,
-buttons: buttons,
-headerType: 4,
-contextInfo:{externalAdReply:{
-title: `「 Hai 👋 Selamat datang di ${metadata.subject} XD 」`,
-body: `yeyy, member nambah 1`,
-mediaType:2,
-thumbnail: XeonWlcm,
-sourceUrl: `${websitex}`,
-mediaUrl: `${websitex}`
-}}
-}
-OctopusBotzz.sendMessage(anu.id, buttonMessage, {quoted:unicorndoc})
-                } else if (anu.action == 'remove') {
-                	const xeonbuffer = await getBuffer(ppuser)
-                    const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-	                const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
-                	let xeonName = num
-                    const xeonmembers = metadata.participants.length
-                    let unicorndoc = {key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "6281359391296-1604595598@g.us"}, "message": {orderMessage: {itemCount: 9999999,status: 200, thumbnail: xeonbuffer, surface: 200, message: `${metadata.subject}`, orderTitle: 'octopus', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
-                    xeonbody = `┌─❖=> *INFO*
+reply(`@${xeonName.split("@")[0]} masuk di grup ini`)
+/*
+OctopusBotzz.sendMessage(anu.id,
+  {
+  text: messInfo,
+    contextInfo:{
+      mentionedJid:[num],
+      "externalAdReply": {
+        "showAdAttribution": true,
+        "containsAutoReply": true,
+        "title": ` ${botname}`,
+        "body": `${ownername}`,
+        "previewType": "PHOTO",
+        "thumbnailUrl": ``,
+        "thumbnail": pepeUsr,
+        "sourceUrl": `${wagc}`
+      }
+    }
+  }
+)
+*/
+} else if (anu.action == 'remove') {
+  const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+  const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
+  let xeonName = num
+  messInfo = `┌─❖=> *INFO*
 │Tag Nama : @${xeonName.split("@")[0]}
 │Nomor : ${xeonName.split("@")[0]}
 │Keluar Dari ${metadata.subject}
 │Waktu Keluar : ${xeontime} ${xeondate}
-│Total Member Sekarang : ${xeonmembers}
+│Total Member Sekarang : ${memSek}
 └───────────────┈ ⳹`
-let buttons = [
-{buttonId: `dadah`, buttonText: {displayText: 'Sayonara 🥀'}, type: 1}
-]
-let buttonMessage = {
-document: fs.readFileSync('./XeonMedia/theme/cheems.xlsx'),
-mimetype: docs,
-jpegThumbnail:XeonLft,
-mentions: [num],
-fileName: `${metadata.subject}`,
-fileLength: 99999999999999,
-caption: xeonbody,
-footer: `${botname}`,
-buttons: buttons,
-headerType: 4,
-contextInfo:{externalAdReply:{
-title: `「 Selamat Tinggal 👋 」`,
-body: `yahh, member berkurang 1`,
-mediaType:2,
-thumbnail: XeonLft,
-sourceUrl: `${websitex}`,
-mediaUrl: `${websitex}`
-}}
-}
-OctopusBotzz.sendMessage(anu.id, buttonMessage, {quoted:unicorndoc})
 } else if (anu.action == 'promote') {
-const xeonbuffer = await getBuffer(ppuser)
 const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
 const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
 let xeonName = num
-xeonbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀🎉 @${xeonName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
-   OctopusBotzz.sendMessage(anu.id,
- { text: xeonbody,
- contextInfo:{
- mentionedJid:[num],
- "externalAdReply": {"showAdAttribution": true,
- "containsAutoReply": true,
- "title": ` ${global.botname}`,
-"body": `${ownername}`,
- "previewType": "PHOTO",
-"thumbnailUrl": ``,
-"thumbnail": XeonWlcm,
-"sourceUrl": `${wagc}`}}})
-} else if (anu.action == 'demote') {
-const xeonbuffer = await getBuffer(ppuser)
-const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
-let xeonName = num
-xeonbody = `𝗢𝗼𝗽𝘀‼️ @${xeonName.split("@")[0]}, you have been *demoted* from *admin* 😬`
+messInfo = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀🎉 @${xeonName.split("@")[0]}, Anda telah *dipromosikan* menjadi *admin* 🥳`
+reply(`@${xeonName.split("@")[0]} keluar dari grup ini`)
+/*
 OctopusBotzz.sendMessage(anu.id,
- { text: xeonbody,
+  {
+  text: messInfo,
+    contextInfo:{
+      mentionedJid:[num],
+      "externalAdReply": {
+        "showAdAttribution": true,
+        "containsAutoReply": true,
+        "title": ` ${botname}`,
+        "body": `${ownername}`,
+        "previewType": "PHOTO",
+        "thumbnailUrl": ``,
+        "thumbnail": pepeUsr,
+        "sourceUrl": `${wagc}`
+      }
+    }
+  }
+)
+*/
+} else if (anu.action == 'demote') {
+const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
+let xeonName = num
+messInfo = `𝗢𝗼𝗽𝘀‼️ @${xeonName.split("@")[0]}, kamu telah *diturunkan* dari *admin* 😬`
+OctopusBotzz.sendMessage(anu.id,
+ { text: messInfo,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
  "containsAutoReply": true,
- "title": ` ${global.botname}`,
+ "title": ` ${botname}`,
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": XeonLft,
+"thumbnail": pepeUsr,
 "sourceUrl": `${wagc}`}}})
 }
 }
@@ -323,7 +297,7 @@ OctopusBotzz.sendContact = async (jid, kon, quoted = '', opts = {}) => {
 	for (let i of kon) {
 	    list.push({
 	    	displayName: await OctopusBotzz.getName(i + '@s.whatsapp.net'),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await OctopusBotzz.getName(i + '@s.whatsapp.net')}\nFN:${global.ownername}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Click here to chat my owner\nitem2.EMAIL;type=EMAIL:${global.ytname}\nitem2.X-ABLabel:Email\nitem3.URL:${global.socialm}\nitem3.X-ABLabel:GitHub\nitem4.ADR:;;${global.location};;;;\nitem4.X-ABLabel:Location\nEND:VCARD`
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await OctopusBotzz.getName(i + '@s.whatsapp.net')}\nFN:${ownername}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Click here to chat my owner\nitem2.EMAIL;type=EMAIL:${global.ytname}\nitem2.X-ABLabel:Email\nitem3.URL:${global.socialm}\nitem3.X-ABLabel:GitHub\nitem4.ADR:;;${global.location};;;;\nitem4.X-ABLabel:Location\nEND:VCARD`
 	    })
 	}
 	OctopusBotzz.sendMessage(jid, { contacts: { displayName: `${list.length} Contact`, contacts: list }, ...opts }, { quoted })
@@ -499,68 +473,7 @@ console.log('Connected...', update)
 
 OctopusBotzz.ev.on('creds.update', await saveCreds)
 
-start('2',colors.bold.white('\nWaiting for New Messages..'))
-
-OctopusBotzz.sendButtonText = (jid, buttons = [], text, footer, quoted = '', options = {}) => {
-let buttonMessage = {
-text,
-footer,
-buttons,
-headerType: 2,
-...options
-}
-OctopusBotzz.sendMessage(jid, buttonMessage, { quoted, ...options })
-}
-
-OctopusBotzz.sendKatalog = async (jid , title = '' , desc = '', gam , options = {}) =>{
-let message = await prepareWAMessageMedia({ image: gam }, { upload: OctopusBotzz.waUploadToServer })
-const tod = generateWAMessageFromContent(jid,
-{"productMessage": {
-"product": {
-"productImage": message.imageMessage,
-"productId": "9999",
-"title": title,
-"description": desc,
-"currencyCode": "INR",
-"priceAmount1000": "100000",
-"url": `${websitex}`,
-"productImageCount": 1,
-"salePriceAmount1000": "0"
-},
-"businessOwnerJid": `${ownernumber}@s.whatsapp.net`
-}
-}, options)
-return OctopusBotzz.relayMessage(jid, tod.message, {messageId: tod.key.id})
-} 
-
-OctopusBotzz.send5ButLoc = async (jid , text = '' , footer = '', img, but = [], options = {}) =>{
-var template = generateWAMessageFromContent(jid, proto.Message.fromObject({
-templateMessage: {
-hydratedTemplate: {
-"hydratedContentText": text,
-"locationMessage": {
-"jpegThumbnail": img },
-"hydratedFooterText": footer,
-"hydratedButtons": but
-}
-}
-}), options)
-OctopusBotzz.relayMessage(jid, template.message, { messageId: template.key.id })
-}
-
-OctopusBotzz.sendButImg = async (jid, path, teks, fke, but) => {
-let img = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-let fjejfjjjer = {
-image: img, 
-jpegThumbnail: img,
-caption: teks,
-fileLength: "1",
-footer: fke,
-buttons: but,
-headerType: 4,
-}
-OctopusBotzz.sendMessage(jid, fjejfjjjer, { quoted: m })
-}
+//start('2',colors.bold.white('\nWaiting for New Messages..'))
 
 return OctopusBotzz
 

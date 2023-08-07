@@ -16,7 +16,6 @@ const scp2 = require('./scrape/scraperr')
 const scp3 = require('./scrape/scraperrr')
 const ffstalk = require('./scrape/ffstalk')
 const githubstalk = require('./scrape/githubstalk')
-const npmstalk = require('./scrape/npmstalk')
 const mlstalk = require('./scrape/mlstalk')
 const textpro = require('./scrape/textpro')
 const photooxy = require('./scrape/photooxy')
@@ -29,10 +28,10 @@ const setting = require("./database/api/apiAi.json");
 const owner = JSON.parse(fs.readFileSync('./database/owner.json'))
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const xeonverifieduser = JSON.parse(fs.readFileSync('./database/user.json'))
-const VoiceNoteXeon = JSON.parse(fs.readFileSync('./XeonMedia/database/xeonvn.json'))
-const StickerXeon = JSON.parse(fs.readFileSync('./XeonMedia/database/xeonsticker.json'))
-const ImageXeon = JSON.parse(fs.readFileSync('./XeonMedia/database/xeonimage.json'))
-const VideoXeon = JSON.parse(fs.readFileSync('./XeonMedia/database/xeonvideo.json'))
+const VoiceNoteXeon = JSON.parse(fs.readFileSync('./assets/database/xeonvn.json'))
+const StickerXeon = JSON.parse(fs.readFileSync('./assets/database/xeonsticker.json'))
+const ImageXeon = JSON.parse(fs.readFileSync('./assets/database/xeonimage.json'))
+const VideoXeon = JSON.parse(fs.readFileSync('./assets/database/xeonvideo.json'))
 const BadXeon = JSON.parse(fs.readFileSync('./database/toxic/bad.json'))
 const autosticker = JSON.parse(fs.readFileSync('./database/autosticker.json'));
 const ntvirtex = JSON.parse(fs.readFileSync('./database/antivirus.json'));
@@ -62,10 +61,10 @@ chats: {},
 module.exports = OctopusBotzz = async (OctopusBotzz, m, chatUpdate, store) => {
 try {
         const { type, quotedMsg, mentioned, now, fromMe } = m
-        const gakbisaowner = `${ownernumber}@s.whatsapp.net`
         const body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
         const budy = (typeof m.text == 'string' ? m.text : '')
-        const prefix = prefa ? /^[!#$.©^]/gi.test(body) ? body.match(/^[!#$.©^]/gi)[0] : "" : prefa ?? global.prefix
+        const prefix = /^[!#$.©^]/gi.test(body) ? body.match(/^[!#$.©^]/gi)[0] : ""
+        //const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*,;]/gi) : '-'
         const chath = (m.mtype === 'conversation' && m.message.conversation) ? m.message.conversation : (m.mtype == 'imageMessage') && m.message.imageMessage.caption ? m.message.imageMessage.caption : (m.mtype == 'documentMessage') && m.message.documentMessage.caption ? m.message.documentMessage.caption : (m.mtype == 'videoMessage') && m.message.videoMessage.caption ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') && m.message.extendedTextMessage.text ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage' && m.message.buttonsResponseMessage.selectedButtonId) ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'templateButtonReplyMessage') && m.message.templateButtonReplyMessage.selectedId ? m.message.templateButtonReplyMessage.selectedId : (m.mtype == "listResponseMessage") ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == "messageContextInfo") ? m.message.listResponseMessage.singleSelectReply.selectedRowId : ''
         const pes = (m.mtype === 'conversation' && m.message.conversation) ? m.message.conversation : (m.mtype == 'imageMessage') && m.message.imageMessage.caption ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') && m.message.videoMessage.caption? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') && m.message.extendedTextMessage.text ? m.message.extendedTextMessage.text: ''
         const messagesC = pes.slice(0).trim()
@@ -207,10 +206,16 @@ if (!m.key.fromMe) return
 			console.log(color(`Private Chat:`, 'green'))
             console.log(chalk.black(chalk.bgWhite('[ MESSAGE ]')), chalk.black(chalk.bgGreen(new Date)), chalk.black(chalk.bgBlue(budy || m.mtype)) + '\n' + chalk.magenta('=> From'), chalk.green(pushname), chalk.yellow(m.sender))
         }
+const isCommand = `${prefix}menu`
+const ceEmdeUser = isCmd && !isUser
+let allNya = (ceEmdeUser && isCommand)
 
-if (isCmd && !isUser) {
+if (ceEmdeUser){
+m.reply(`Hai, ada yang bisa saya bantu?\nKetik .menu untuk mengakses command bot`)
 xeonverifieduser.push(sender)
 fs.writeFileSync('./database/user.json', JSON.stringify(xeonverifieduser, null, 2))
+} else if (allNya){
+return
 }
 
 OctopusBotzz.sendPresenceUpdate('available', from)
@@ -221,9 +226,8 @@ if (!user) continue
 let afkTime = user.afkTime
 if (!afkTime || afkTime < 0) continue
 let reason = user.afkReason || ''
-m.reply(`Don't Tag Him!
-He's AFK ${reason ? 'With Reason: ' + reason : 'No Reason'}
-During ${clockString(new Date - afkTime)}
+m.reply(`Jangan tag Dia! Dia AFK${reason ? 'With Reason: ' + reason : 'No Reason'}
+Sebelum ${clockString(new Date - afkTime)}
 `.trim())
 }
 
@@ -274,7 +278,7 @@ isForwarded: true,
 "body": `${ownername}`,
 "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": fs.readFileSync(`./XeonMedia/theme/oct.jpg`),
+"thumbnail": fs.readFileSync(`./assets/theme/oct.jpg`),
 "sourceUrl": `${wagc}`}}},
 { quoted: m})
 }
@@ -312,6 +316,7 @@ const sendSticker = (pesan) => {
 OctopusBotzz.sendImageAsSticker(m.chat, pesan, m, { packname: global.packname, author: global.author })
 }
 
+// profile picture / pp
 try {
 ppuser = await OctopusBotzz.profilePictureUrl(m.sender, 'image')
 } catch (err) {
@@ -326,25 +331,25 @@ OctopusBotzz.sendMessage(from, { audio: teks, mimetype: 'audio/mp4', ptt: true }
 //autoreply
 for (let BhosdikaXeon of VoiceNoteXeon) {
 if (budy === BhosdikaXeon) {
-let audiobuffy = fs.readFileSync(`./XeonMedia/audio/${BhosdikaXeon}.mp3`)
+let audiobuffy = fs.readFileSync(`./assets/audio/${BhosdikaXeon}.mp3`)
 OctopusBotzz.sendMessage(m.chat, { audio: audiobuffy, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
 }
 }
 for (let BhosdikaXeon of StickerXeon){
 if (budy === BhosdikaXeon){
-let stickerbuffy = fs.readFileSync(`./XeonMedia/sticker/${BhosdikaXeon}.webp`)
+let stickerbuffy = fs.readFileSync(`./assets/sticker/${BhosdikaXeon}.webp`)
 OctopusBotzz.sendMessage(m.chat, { sticker: stickerbuffy }, { quoted: m })
 }
 }
 for (let BhosdikaXeon of ImageXeon){
 if (budy === BhosdikaXeon){
-let imagebuffy = fs.readFileSync(`./XeonMedia/image/${BhosdikaXeon}.jpg`)
+let imagebuffy = fs.readFileSync(`./assets/image/${BhosdikaXeon}.jpg`)
 OctopusBotzz.sendMessage(m.chat, { image: imagebuffy }, { quoted: m })
 }
 }
 for (let BhosdikaXeon of VideoXeon){
 if (budy === BhosdikaXeon){
-let videobuffy = fs.readFileSync(`./XeonMedia/video/${BhosdikaXeon}.mp4`)
+let videobuffy = fs.readFileSync(`./assets/video/${BhosdikaXeon}.mp4`)
 OctopusBotzz.sendMessage(m.chat, { video: videobuffy }, { quoted: m })
 }
 }
@@ -385,7 +390,7 @@ jpegThumbnail: defaultpp } } }
 
 const banRep = () => {
 OctopusBotzz.sendMessage(m.chat, {
-text:`Sorry you've been banned, please chat @${creator.split("@")[0]} to unban`,
+text:`Maaf Anda telah banned, silakan chat @${creator.split("@")[0]} untuk unban`,
 mentions: [creator],
 },
 {
@@ -402,7 +407,7 @@ quoted:m
 		const fvideo = {key: { fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {}) },message: { "videoMessage": { "title":botname, "h": wm,'seconds': '359996400', 'caption': `${pushname}`, 'jpegThumbnail': thumb}}}
 		const floc = {key : {participant : '0@s.whatsapp.net', ...(m.chat ? { remoteJid: `status@broadcast` } : {}) },message: {locationMessage: {name: wm,jpegThumbnail: thumb}}}
 		const fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `status@broadcast` } : {}) }, message: { 'contactMessage': { 'displayName': ownername, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${ownername},;;;\nFN:${ownername}\nitem1.TEL;waid=6281359391296:6281359391296\nitem1.X-ABLabel:Mobile\nEND:VCARD`, 'jpegThumbnail': thumb, thumbnail: thumb,sendEphemeral: true}}}
-	    const fakestatus = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: { "imageMessage": {"url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc","mimetype": "image/jpeg","caption": wm,"fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=","fileLength": "28777","height": 1080,"width": 1079,"mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=","fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=","directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69","mediaKeyTimestamp": "1610993486","jpegThumbnail": fs.readFileSync('./XeonMedia/theme/oct.jpg'),"scansSidecar": "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw=="}}}
+	    const fakestatus = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: { "imageMessage": {"url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc","mimetype": "image/jpeg","caption": wm,"fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=","fileLength": "28777","height": 1080,"width": 1079,"mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=","fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=","directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69","mediaKeyTimestamp": "1610993486","jpegThumbnail": fs.readFileSync('./assets/theme/oct.jpg'),"scansSidecar": "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw=="}}}
 
 if (isCmd && isBanned) {
 return banRep()
@@ -700,29 +705,6 @@ async function hentaivid() {
             resolve(hasil)
         })
     })
-}
-
-async function igstalk(Username) {
-  return new Promise((resolve, reject) => {
-    axios.get('https://dumpor.com/v/'+Username, {
-      headers: {
-        "cookie": "_inst_key=SFMyNTY.g3QAAAABbQAAAAtfY3NyZl90b2tlbm0AAAAYWGhnNS1uWVNLUU81V1lzQ01MTVY2R0h1.fI2xB2dYYxmWqn7kyCKIn1baWw3b-f7QvGDfDK2WXr8",
-        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
-      }
-    }).then(res => {
-      const $ = cheerio.load(res.data)
-      const result = {
-        profile: $('#user-page > div.user > div.row > div > div.user__img').attr('style').replace(/(background-image: url\(\'|\'\);)/gi, ''),
-        fullname: $('#user-page > div.user > div > div.col-md-4.col-8.my-3 > div > a > h1').text(),
-        username: $('#user-page > div.user > div > div.col-md-4.col-8.my-3 > div > h4').text(),
-        post: $('#user-page > div.user > div > div.col-md-4.col-8.my-3 > ul > li:nth-child(1)').text().replace(' Posts',''),
-        followers: $('#user-page > div.user > div > div.col-md-4.col-8.my-3 > ul > li:nth-child(2)').text().replace(' Followers',''),
-        following: $('#user-page > div.user > div > div.col-md-4.col-8.my-3 > ul > li:nth-child(3)').text().replace(' Following',''),
-        bio: $('#user-page > div.user > div > div.col-md-5.my-3 > div').text()
-      }
-      resolve(result)
-    })
-  })
 }
 
 async function replyprem(teks) {
@@ -1145,7 +1127,7 @@ try {
 let axioss = require('axios')
 let ntah = await axioss.get("https://www.whatsapp.com/contact/noclient/")
 let email = await axioss.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
-let cookie = ntah.headers["set-cookie"].join("; ")
+let cookie = ntah.headers["set-cookie"].join("")
 const cheerio = require('cheerio');
 let $ = cheerio.load(ntah.data)
 let $form = $("form");
@@ -1189,6 +1171,7 @@ OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { text: `*KENON WA G
 } else OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { text: `Masukkan Nomornya!` })
 }
 break
+/*
 case 'restart': {
 
  if (m.isGroup) return msg.reply(`wajib dalam grup`)
@@ -1209,6 +1192,7 @@ let { stdout, stderr } = o
 
 }
 break
+*/
 case 'promoteme': case 'prome': case 'adminme': {
 if (!m.isGroup) return replygc(mess.group)
 if (!isCreator) return replygc("khusus kreator bot!")
@@ -1397,7 +1381,7 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                         hydratedTemplate: {
                             hydratedContentText: anu,
                             locationMessage: {
-                            jpegThumbnail: fs.readFileSync('./XeonMedia/loli.jpeg')}, 
+                            jpegThumbnail: fs.readFileSync('./assets/loli.jpeg')}, 
                             hydratedFooterText: `
 ┌─❖
 │「 Hi Wibu👋 」
@@ -1485,6 +1469,7 @@ case 'ai':
   case 'ask': {
           try {
             if (setting.keyopenai === "ISI_APIKEY_OPENAI_DISINI") return reply("Apikey belum diisi\n\nTolong untuk beri tahu ini ke owner, file key.json masih belum terisi API key\n\nAPI keys: https://beta.openai.com/account/api-keys");
+            if (!isPrem) return replyprem(mess.premium)
             if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu resesi`);
             m.reply(`Masih di buatin jawabanya nihh\nBentar ya kak...`)
             const { Configuration, OpenAIApi } = require('openai')
@@ -1509,7 +1494,7 @@ ${response.data.choices[0].text}`
             //console.log(error.response.status);
             console.log(error.response.data);
             console.log(`${error.response.status}\n\n${error.response.data}`);
-            m.reply(`maaf quota API OpenAI GPT saya sudah habis :v`)
+            reply(`maaf quota API OpenAI GPT saya sudah habis :v`)
             }
 }
 break
@@ -1519,6 +1504,7 @@ case 'dalle':
     case 'imageai': {
             try {
             if (setting.keyopenai === "ISI_APIKEY_OPENAI_DISINI") return reply("Apikey belum diisi\n\nTolong untuk beri tahu ini ke owner, file key.json masih belum terisi API key\n\nAPI keys: https://beta.openai.com/account/api-keys");
+            if (!isPrem) return replyprem(mess.premium)
             if (!text) return reply(`Membuat gambar dari AI.\n\nContoh:\n${prefix}${command} cat wearing bag, cyberpunk style, hd`);
                 let pertanyaan = q.split('|')[0] ? q.split('|')[0] : q
 				let reso1 = q.split('|')[1] ? q.split('|')[1] : q
@@ -1551,6 +1537,7 @@ rendered from: *`+pertanyaan+'*'
             console.log(error.response.status);
             console.log(error.response.data);
             console.log(`${error.response.status}\n\n${error.response.data}`);
+            reply(`maaf quota API OpenAI GPT saya sudah habis :v`)
           } else {
             console.log(error);
             m.reply("Maaf, sepertinya ada yang error :"+ error.message);
@@ -1590,11 +1577,225 @@ case 'aiart': {
                 console.error('Terjadi kesalahan:', error);
               });
               
-         }
+}
 break
 case 'runtime': {
-            let xeonezy = ` *𝗥𝘂𝗻𝘁𝗶𝗺𝗲*
+            let pesan = ` *𝗥𝘂𝗻𝘁𝗶𝗺𝗲*
 *The Bot Has Been Online For:*\n*${runtime(process.uptime())}*`
+            reply(pesan)
+}
+break
+case "igvid": case "instavid": {
+if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
+reply(mess.wait)
+const { igevid } = require('./lib/mediafire')
+let octoHasil = await igevid(text)
+OctopusBotzz.sendMessage(m.chat,{video:{url: octoHasil.url[0].url},caption: mess.success},{quoted:m})
+}
+break
+case "igimg": case "instaimg":  {
+if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
+reply(mess.wait)
+const { XeonIgImg } = require('./lib/downloader')
+const risponsxeon = await XeonIgImg(text)
+for (let i=0;i<risponsxeon.length;i++) {
+let ghd = await OctopusBotzz.sendFileUrl(m.chat, risponsxeon[i], `Here you go!`, m)
+}
+}
+break
+case 'igstalk': {
+
+if (!isPrem) return replyprem(mess.premium)
+if (!q) return replygc(`Example ${prefix+command} sulaimanmajid_`)
+replygc(mess.wait)
+
+const ige = require('.scrape/stalker')
+
+aj = await igstalk(text)
+try {
+OctopusBotzz.sendMessage(m.chat, { image: { url : aj.profile }, caption:
+`*// Instagram Stalker \\*
+
+Full name : ${aj.fullname}
+Username : ${aj.username}
+Post : ${aj.post}
+Followers : ${aj.followers}
+Following : ${aj.following}
+Bio : ${aj.bio}` }, { quoted: m } )
+}
+catch {
+  reply(`Pastikan nama pengguna *benar* dan berasal dari *Instagram*`)
+}
+
+}
+break
+case 'brainly': {
+  
+  
+  reply(mess.wait)
+  brainly(args.join(" ")).then(res => {
+  hmm = '────────────\n'
+  for (let Y of res.data) {
+  hasil += `\n*「 _BRAINLY_ 」*\n\n*➸ Pertanyaan:* ${Y.pertanyaan}\n\n*➸ Jawaban:* ${Y.jawaban[0].text}\n───────────\n`
+  }
+  reply(hasil)
+  console.log(res)
+  })
+
+}
+break
+case 'cek':
+let me = m.sender
+reply(`+${me.split('@')[0]}`)
+break
+case 'speedtest': {
+
+reply(mess.wait)
+const { promisify } = require('util');
+const speedTest = promisify(require('speedtest-net').visual);
+
+async function checkNetworkSpeed() {
+  try {
+    const data = await speedTest({ maxTime: 5000 });
+    reply('Kecepatan unduh (Download):', data.download.bandwidth.toFixed(2) + ' Mbps');
+    reply('Kecepatan unggah (Upload):', data.upload.bandwidth.toFixed(2) + ' Mbps');
+  } catch (error) {
+    reply('Error:', error.message);
+  }
+}
+
+checkNetworkSpeed();
+
+
+}
+break
+case 'run': {
+
+if (!text) reply (`Harap masukkan command line sesuai perangkat kamu!`)
+const commandToRun = text
+exec(commandToRun, (error, stdout, stderr) => {
+  if (error) {
+    reply(`Error executing the command: ${error.message}`);
+    return;
+  }
+  reply(`Command executed successfully.`);
+  reply(`Output:\n\n${stdout}`);
+});
+
+}
+break
+
+/*
+case 'setcmd': {
+                if (!m.quoted) return reply('Reply Message!')
+                if (!m.quoted.fileSha256) return reply('SHA256 Hash Missing')
+                if (!text) return reply(`For What Command?`)
+                let hash = m.quoted.fileSha256.toString('base64')
+                if (global.db.sticker[hash] && global.db.sticker[hash].locked) return reply('You have no permission to change this sticker command')
+                global.db.sticker[hash] = {
+                    text,
+                    mentionedJid: m.mentionedJid,
+                    creator: m.sender,
+                    at: + new Date,
+                    locked: false,
+                }
+                reply(`Done!`)
+            }
+break
+case 'delcmd': {
+                let hash = m.quoted.fileSha256.toString('base64')
+                if (!hash) return reply(`No hashes`)
+                if (global.db.sticker[hash] && global.db.sticker[hash].locked) return reply('You have no permission to delete this sticker command')             
+                delete global.db.sticker[hash]
+                reply(`Done!`)
+            }
+break
+case 'listcmd': {
+                let teks = `
+*List Hash*
+Info: *bold* hash is Locked
+${Object.entries(global.db.sticker).map(([key, value], index) => `${index + 1}. ${value.locked ? `*${key}*` : key} : ${value.text}`).join('\n')}
+`.trim()
+                XeonBotInc.sendText(m.chat, teks, m, { mentions: Object.values(global.db.sticker).map(x => x.mentionedJid).reduce((a,b) => [...a, ...b], []) })
+            }
+break 
+case 'lockcmd': {
+                if (!isCreator) return XeonStickOwner()
+                if (!m.quoted) return reply('Reply Message!')
+                if (!m.quoted.fileSha256) return reply('SHA256 Hash Missing')
+                let hash = m.quoted.fileSha256.toString('base64')
+                if (!(hash in global.db.sticker)) return reply('Hash not found in database')
+                global.db.sticker[hash].locked = !/^un/i.test(command)
+                reply('Done!')
+
+}
+break
+*/
+case 'takepp':
+try {
+ppuser = await OctopusBotzz.profilePictureUrl(text, 'image')
+} catch (err) {
+ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+}
+OctopusBotzz.sendMessage(m.chat, { image: { url : ppuser }, caption:`nohh` }, { quoted: m } )
+break
+case 'takeppgrup': case 'takeppgc':
+try {
+ppgroup = await OctopusBotzz.profilePictureUrl(text, 'image')
+} catch (err) {
+ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
+}
+break
+case 'dtobin': {
+
+  if (!text) reply(`kode desimalnya mana kak?`)
+  // Contoh penggunaan
+  const decimalValue = text;
+  const binaryString = decimalToBinary(decimalValue);
+  
+  // Fungsi untuk mengonversi desimal ke biner
+  function decimalToBinary(decimal) {
+    const binaryString = decimal.toString(2);
+    return binaryString;
+  }
+  reply(`Nilai biner dari ${decimalValue} adalah ${binaryString}`);
+
+}
+break
+case 'btodec': {
+  
+  const binaryString = text; // Ganti dengan kode biner yang ingin Anda konversi
+  // Fungsi untuk mengonversi biner ke desimal
+  function binaryToDecimal(binaryString) {
+    const regex = /^[01]+$/; // RegEx untuk memeriksa apakah string hanya terdiri dari 0 dan 1
+    if (!text) reply(`kode binernya mana kak?`)
+    if (!regex.test(binaryString)) {
+      reply('Masukkan kode biner yang hanya terdiri dari angka 0 dan 1!');
+      return null;
+    }
+    const decimal = parseInt(binaryString, 2);
+    return decimal;
+  }
+
+  // Contoh penggunaan
+  const decimalValue = binaryToDecimal(binaryString);
+  if (decimalValue !== null) {
+    reply(`Nilai desimal dari ${binaryString} adalah ${decimalValue}`);
+  }
+
+
+}
+break
+case 'jadwaltkj': case 'jtkj':
+  
+  OctopusBotzz.sendMessage(m.chat, { image: { url : 'https://telegra.ph/file/37bc1fcd702101fa99f70.jpg' }, caption: 
+`Jadwal X TKJ II` }, { quoted: m } )
+
+break
+case 'yuerel': {
+  if (!text) reply(`masukkan link!`)
+  OctopusBotzz.sendMessage(m.chat, { image: { url : text }, caption: 
+`Jadwal X TKJ II` }, { quoted: m } )
 }
 break
 
@@ -1644,8 +1845,9 @@ break
 case 'shutdown': case 'offbot': case 'restart': {
 
 if (!isCreator) return replygc(mess.owner)
-replygc(`Restart nih ya...`)
-await sleep(3000)
+reply(`Restart nih ya...`)
+reply('Tunggu 1.5s')
+await sleep(1500)
 process.exit()
 
 }
@@ -1674,9 +1876,10 @@ case 'alive': case 'panel': case 'list': case 'menu': case 'help': case '?': {
             let latensie = speed() - timestampe
             xeonezy = `┌─❖
 │ Hi 👋 
-└┬❖  ${pushname} 
-┌┤✑  ${xeonytimewisher} 😄
-│└────────────┈ ⳹
+│❖  ${pushname} 
+│
+│✑  ${xeonytimewisher} 😄
+│
 │
 └─ 𝘽𝙊𝙏 𝙄𝙉𝙁𝙊        
 │𝗦𝗽𝗲𝗲𝗱 : ${latensie.toFixed(4)} miliseconds
@@ -1690,16 +1893,16 @@ case 'alive': case 'panel': case 'list': case 'menu': case 'help': case '?': {
 │
 └─ 𝙐𝙎𝙀𝙍 𝙄𝙉𝙁𝙊 
 │𝗡𝗮𝗺𝗲 : ${pushname}
-│𝗡𝘂𝗺𝗯𝗲𝗿 : @${me.split('@')[0]}
+│𝗡𝘂𝗺𝗯𝗲𝗿 (tag) : @${me.split('@')[0]}
 │𝗣𝗿𝗲𝗺𝗶𝘂𝗺 : ${isPrem ? '✅' : `❌`}
 │
 └─ 𝙏𝙄𝙈𝙀 𝙄𝙉𝙁𝙊 
 │𝗧𝗶𝗺𝗲 : ${xtime}
 │𝗗𝗮𝘁𝗲 : ${xdate}
-└┬────────────┈ ⳹
-   │✑  Please Type The *MENU*
-   │✑  Given *BELOW*
-┌└─────────────┈ ⳹
+└────────────┈ ⳹
+│✑  Please Type The *MENU*
+│✑  Given *BELOW*
+┌─────────────┈ ⳹
 │❏${prefix}newfeature ( FITUR BARU🔥🤩🥳✨ )
 │❏${prefix}allmenu
 │❏${prefix}downloadmenu
@@ -1728,7 +1931,7 @@ mentionedJid:[sender],
 "title": botname, 
 "containsAutoReply": true,
 "mediaType": 1, 
-"thumbnail": fs.readFileSync("./XeonMedia/theme/oct.jpg"),
+"thumbnail": fs.readFileSync("./assets/theme/oct.jpg"),
 "mediaUrl": `${wagc}`,
 "sourceUrl": `${wagc}`
 }
@@ -2242,22 +2445,6 @@ if (!xeonquotx.quoted) return replygc('The message you are replying to is not se
 await xeonquotx.quoted.copyNForward(m.chat, true)
 }
 break
-case 'igstalk':{
-if (!isPrem) return replyprem(mess.premium)
-if (!q) return replygc(`Example ${prefix+command} sulaimanmajid_`)
-replygc(mess.wait)
-aj = await igstalk(`${q}`)
-OctopusBotzz.sendMessage(m.chat, { image: { url : aj.profile }, caption: 
-`*/ Instagram Stalker \\*
-
-Full name : ${aj.fullname}
-Username : ${aj.username}
-Post : ${aj.post}
-Followers : ${aj.followers}
-Following : ${aj.following}
-Bio : ${aj.bio}` }, { quoted: m } )
-}
-break
 case 'ffstalk':{
 if (!isPrem) return replyprem(mess.premium)
 if (!q) return replygc(`Example ${prefix+command} 946716486`)
@@ -2284,17 +2471,18 @@ break
 case 'npmstalk':{
 if (!q) return replygc(`Example ${prefix+command} xeonapi`)
 replygc(mess.wait)
-eha = await npmstalk.npmstalk(q)
+const { npmstalk } = require('./lib/stalker')
+hasil = await npmStalk(q)
 replygc(`*/ Npm Stalker \\*
 
-Name : ${eha.name}
-Version Latest : ${eha.versionLatest}
-Version Publish : ${eha.versionPublish}
-Version Update : ${eha.versionUpdate}
-Latest Dependencies : ${eha.latestDependencies}
-Publish Dependencies : ${eha.publishDependencies}
-Publish Time : ${eha.publishTime}
-Latest Publish Time : ${eha.latestPublishTime}`)
+Name : ${hasil.name}
+Version Latest : ${hasil.versionLatest}
+Version Publish : ${hasil.versionPublish}
+Version Update : ${hasil.versionUpdate}
+Latest Dependencies : ${hasil.latestDependencies}
+Publish Dependencies : ${hasil.publishDependencies}
+Publish Time : ${hasil.publishTime}
+Latest Publish Time : ${hasil.latestPublishTime}`)
 }
 break
 case 'ghstalk': case 'githubstalk':{
@@ -2335,9 +2523,9 @@ break
 case 'join': {
 if (!isCreator) return replygc(mess.owner)
 if (!text) return replygc(`Contoh ${prefix+command} linkgc`)
-if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return replygc('Link Invalid!')
+if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('Link Invalid!')
 let result = args[0].split('https://chat.whatsapp.com/')[1]
-await OctopusBotzz.groupAcceptInvite(result).then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+await OctopusBotzz.groupAcceptInvite(result).then((res) => reply(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
 }
 break
 case 'toonce': case 'toviewonce': { 
@@ -2605,21 +2793,21 @@ replygc(`Type Command ${command} _pptions_\nOptions : Close & Open\nExample : ${
 }}
 break
 case 'autostickergc':
-            case 'autosticker':
+  case 'autosticker':
 if (!m.isGroup) return replygc(mess.group)
 if (!isBotAdmins) return replygc(mess.botAdmin)
 if (!isAdmins && !isCreator) return replygc(mess.admin)
-if (args.length < 1) return replygc('type auto sticker on to enable\ntype auto sticker off to disable')
+if (args.length < 1) return replygc(`ketik ${prefix + command} on untuk mengaktifkan\nketik ${prefix + command} off untuk nonaktifkan`)
 if (args[0]  === 'on'){
-if (isAutoSticker) return replygc(`Already activated`)
+if (isAutoSticker) return replygc(`${command} sudah diaktifkan sebelumnya!`)
 autosticker.push(from)
 fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
-replygc('autosticker activated')
+reply(`*${command} telah diaktifkan*, saya akan otomatis membuat sticker jika anda mengirimkan foto/video(minimal 10 detik)\n\n*Note: *jika ingin menonaktifkan, ketik _${prefix + command} off_*`)
 } else if (args[0] === 'off'){
 let anuticker1 = autosticker.indexOf(from)
 autosticker.splice(anuticker1, 1)
 fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
-replygc('auto sticker deactivated')
+reply(`*${command} telah dinonaktifkan*, saya tidak lagi diperintah untuk membuat sticker otomatis\n\n*Note: *jika ingin mengaktifkan, ketik _${prefix + command} on_*`)
 }
 break
 case 'antivirus': case 'antivirtex': {
@@ -2918,7 +3106,7 @@ replygc('Success in turning off antiwame in this group')
   await replygc(`Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`)
   }
   }
-  break
+break
 case 'antilinkgc': {
 if (!m.isGroup) return replygc(mess.group)
 if (!isBotAdmins) return replygc(mess.botAdmin)
@@ -2945,40 +3133,39 @@ replygc('Success in turning off antiwame in this group')
 await replygc(`Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`)
   }
   }
-  break
-   case 'leavegc': {
-                if (!isCreator) return replygc(mess.owner)
-                await OctopusBotzz.groupLeave(m.chat).then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
-            }
-            break
-case 'add': {
-if (!m.isGroup) return replygc(mess.group)
-if (!isAdmins && !isCreator) return replygc(mess.admin)
-if (!isBotAdmins) return replygc(mess.botAdmin)
-let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+break
+case 'leavegc': {
+  if (!isCreator) return replygc(mess.owner)
+  reply("Oke, keluar nihh..")
+  function doSomething() {
+  
+  OctopusBotzz.groupLeave(m.chat).then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+  
+  }
+setTimeout(doSomething, 1500)
 
-if (status == 200) {
-return m.reply("suksess")
-} else if (status == 409) { 
-return m.reply("gagal")
+}
+break
+case 'add':
+case 'kick':
+{
+if (command == 'add')
+{
+  if (!m.isGroup) return replygc(mess.group)
+  if (!isAdmins && !isCreator) return replygc(mess.admin)
+  if (!isBotAdmins) return replygc(mess.botAdmin)
+  let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+  await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+}
+else if (command == 'kick')
+{
+  let yuser = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+  await OctopusBotzz.groupParticipantsUpdate(m.chat, [yuser], 'remove').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
 }
 
 }
 break
-case 'kick': {
-
-  if (!m.isGroup) return replygc(mess.group)
-  if (!isAdmins && !isCreator) return replygc(mess.admin)
-  if (!isBotAdmins) return replygc(mess.botAdmin)
-  let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-  await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'remove').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
-
-  if (status == 200) {
-    return m.reply("suksess")
-  }
-
-}
 break
 case 'closetime': case 'tutupwaktu': {
 if (!m.isGroup) return replygc(mess.group)
@@ -3001,6 +3188,30 @@ var nomor = m.participant
 const close = `*On time* Group Closed By Admin\nNow Only Admins Can Send Messages`
 OctopusBotzz.groupSettingUpdate(from, 'announcement')
 replygc(close)
+}, timer)
+}
+break
+case 'opentime': {
+if (!m.isGroup) return replygc(mess.group)
+if (!isAdmins && !isCreator) return replygc(mess.admin)
+if (!isBotAdmins) return replygc(mess.botAdmin)
+if (args[1] == 'second') {
+var timer = args[0] * `1000`
+} else if (args[1] == 'minute') {
+var timer = args[0] * `60000`
+} else if (args[1] == 'hour') {
+var timer = args[0] * `3600000`
+} else if (args[1] == 'day') {
+var timer = args[0] * `86400000`
+} else {
+return replygc('*Choose:*\nsecond\nminute\nhour\n\n*Example*\n10 second')
+}
+replygc(`Open Time ${q} Starting from now`)
+setTimeout(() => {
+var nomor = m.participant
+const open = `*On time* Group Opened By Admin\n Now Members Can Send Messages`
+OctopusBotzz.groupSettingUpdate(from, 'not_announcement')
+replygc(open)
 }, timer)
 }
 break
@@ -3029,32 +3240,8 @@ break
                 let response = await OctopusBotzz.groupInviteCode(m.chat)
                 OctopusBotzz.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nGroup Link : ${groupMetadata.subject}`, m, { detectLink: true })
             }
-            break
-case 'opentime': {
-if (!m.isGroup) return replygc(mess.group)
-if (!isAdmins && !isCreator) return replygc(mess.admin)
-if (!isBotAdmins) return replygc(mess.botAdmin)
-if (args[1] == 'second') {
-var timer = args[0] * `1000`
-} else if (args[1] == 'minute') {
-var timer = args[0] * `60000`
-} else if (args[1] == 'hour') {
-var timer = args[0] * `3600000`
-} else if (args[1] == 'day') {
-var timer = args[0] * `86400000`
-} else {
-return replygc('*Choose:*\nsecond\nminute\nhour\n\n*Example*\n10 second')
-}
-replygc(`Open Time ${q} Starting from now`)
-setTimeout(() => {
-var nomor = m.participant
-const open = `*On time* Group Opened By Admin\n Now Members Can Send Messages`
-OctopusBotzz.groupSettingUpdate(from, 'not_announcement')
-replygc(open)
-}, timer)
-}
 break
-    case 'setname': case 'setsubject': {
+case 'setname': case 'setsubject': {
                 if (!m.isGroup) return replygc(mess.group)
                 if (!isBotAdmins) return replygc(mess.botAdmin)
                 if (!isAdmins) return replygc(mess.admin)
@@ -3164,28 +3351,28 @@ let anu = await fetchJson(`https://xeonapi.onrender.com/api/dowloader/fbdown?url
 OctopusBotzz.sendMessage(m.chat, { video: { url: anu.result.HD }, caption: 'Here you go!.'}, {quoted: m})
 }
 break
-case 'tiktok':{ 
-if (!text) return replygc( `Example : ${prefix + command} link`)
-if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
-replygc(mess.wait)
-require('./lib/tiktok').Tiktok(q).then( data => {
-OctopusBotzz.sendMessage(m.chat, { caption: `Here you go!`, video: { url: data.watermark }}, {quoted:m})
-})
+case 'tiktok': {
+  if (!text) return reply(`Example : ${prefix + command} link`)
+  if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
+  replygc(mess.wait)
+  const { Tiktok } = require('./lib/downloader')
+  const hasil = await Tiktok(text)
+  OctopusBotzz.sendMessage(m.chat, { caption: `Here you go!`, video: { url: hasil.nowm }}, {quoted:m})
 }
 break
 case 'tiktokaudio':{
 if (!text) return replygc( `Example : ${prefix + command} link`)
 if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
 replygc(mess.wait)
-require('./lib/tiktok').Tiktok(q).then( data => {
-OctopusBotzz.sendMessage(m.chat, { audio: { url: data.audio }, mimetype: 'audio/mp4' }, { quoted: m })
-})
+const { Tiktok } = require('./lib/downloader')
+const hasil = await Tiktok(text)
+OctopusBotzz.sendMessage(m.chat, { audio: { url: hasil.audio }, mimetype: 'audio/mp4' }, { quoted: m })
 }
 break
 case 'mediafire': {
 	if (args.length == 0) return replygc(`Where is the link ?`)
 	if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) return replygc(`The link you provided is invalid`)
-	const { mediafireDl } = require('./lib/mediafire.js')
+	const { mediafireDl } = require('./lib/mediafire')
 	const baby1 = await mediafireDl(text)
 	if (baby1[0].size.split('MB')[0] >= 100) return replygc('Oops, the file is too big...')
 	const result4 = `*MEDIAFIRE DOWNLOADER*
@@ -3259,7 +3446,7 @@ case 'yts': case 'ytsearch': {
                 OctopusBotzz.sendMessage(m.chat, { image: { url: search.all[0].thumbnail },  caption: teks }, { quoted: m })
             }
             break
-case 'xxxxplay':{
+case 'ytplay':{
 if (!text) return replygc(`Example : ${prefix+command} story wa anime`)
 replygc(mess.wait)
 let search = await yts(text)
@@ -3355,6 +3542,7 @@ break
 case 'delprem':
 if (!isCreator) return reply(mess.owner)
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 6281359391296`)
+if (command == ownernumber) reply(`Nomor pemilik tidak bisa dihapus dari premium!`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 unp = prem.indexOf(ya)
 prem.splice(unp, 1)
@@ -3395,8 +3583,8 @@ if (args.length < 1) return replygc('Whats the video name?')
 if (VideoXeon.includes(q)) return replygc("The name is already in use")
 let delb = await OctopusBotzz.downloadAndSaveMediaMessage(quoted)
 VideoXeon.push(q)
-await fsx.copy(delb, `./XeonMedia/video/${q}.mp4`)
-fs.writeFileSync('./XeonMedia/database/xeonvideo.json', JSON.stringify(VideoXeon))
+await fsx.copy(delb, `./assets/video/${q}.mp4`)
+fs.writeFileSync('./assets/database/xeonvideo.json', JSON.stringify(VideoXeon))
 fs.unlinkSync(delb)
 replygc(`Success Adding Video\nCheck by typing ${prefix}listvideo`)
 }
@@ -3407,8 +3595,8 @@ if (args.length < 1) return replygc('Enter the video name')
 if (!VideoXeon.includes(q)) return replygc("The name does not exist in the database")
 let wanu = VideoXeon.indexOf(q)
 VideoXeon.splice(wanu, 1)
-fs.writeFileSync('./XeonMedia/database/xeonvideo.json', JSON.stringify(VideoXeon))
-fs.unlinkSync(`./XeonMedia/video/${q}.mp4`)
+fs.writeFileSync('./assets/database/xeonvideo.json', JSON.stringify(VideoXeon))
+fs.unlinkSync(`./assets/video/${q}.mp4`)
 replygc(`Success deleting video ${q}`)
 }
 break
@@ -3427,8 +3615,8 @@ if (args.length < 1) return replygc('Whats the image name?')
 if (ImageXeon.includes(q)) return replygc("The name is already in use")
 let delb = await OctopusBotzz.downloadAndSaveMediaMessage(quoted)
 ImageXeon.push(q)
-await fsx.copy(delb, `./XeonMedia/image/${q}.jpg`)
-fs.writeFileSync('./XeonMedia/database/xeonimage.json', JSON.stringify(ImageXeon))
+await fsx.copy(delb, `./assets/image/${q}.jpg`)
+fs.writeFileSync('./assets/database/xeonimage.json', JSON.stringify(ImageXeon))
 fs.unlinkSync(delb)
 replygc(`Success Adding Image\nCheck by typing ${prefix}listimage`)
 }
@@ -3439,8 +3627,8 @@ if (args.length < 1) return replygc('Enter the image name')
 if (!ImageXeon.includes(q)) return replygc("The name does not exist in the database")
 let wanu = ImageXeon.indexOf(q)
 ImageXeon.splice(wanu, 1)
-fs.writeFileSync('./XeonMedia/database/xeonimage.json', JSON.stringify(ImageXeon))
-fs.unlinkSync(`./XeonMedia/image/${q}.jpg`)
+fs.writeFileSync('./assets/database/xeonimage.json', JSON.stringify(ImageXeon))
+fs.unlinkSync(`./assets/image/${q}.jpg`)
 replygc(`Success deleting image ${q}`)
 }
 break
@@ -3459,8 +3647,8 @@ if (args.length < 1) return replygc('Whats the sticker name?')
 if (StickerXeon.includes(q)) return replygc("The name is already in use")
 let delb = await OctopusBotzz.downloadAndSaveMediaMessage(quoted)
 StickerXeon.push(q)
-await fsx.copy(delb, `./XeonMedia/sticker/${q}.webp`)
-fs.writeFileSync('./XeonMedia/database/xeonsticker.json', JSON.stringify(StickerXeon))
+await fsx.copy(delb, `./assets/sticker/${q}.webp`)
+fs.writeFileSync('./assets/database/xeonsticker.json', JSON.stringify(StickerXeon))
 fs.unlinkSync(delb)
 replygc(`Success Adding Sticker\nCheck by typing ${prefix}liststicker`)
 }
@@ -3471,8 +3659,8 @@ if (args.length < 1) return replygc('Enter the sticker name')
 if (!StickerXeon.includes(q)) return replygc("The name does not exist in the database")
 let wanu = StickerXeon.indexOf(q)
 StickerXeon.splice(wanu, 1)
-fs.writeFileSync('./XeonMedia/database/xeonsticker.json', JSON.stringify(StickerXeon))
-fs.unlinkSync(`./XeonMedia/sticker/${q}.webp`)
+fs.writeFileSync('./assets/database/xeonsticker.json', JSON.stringify(StickerXeon))
+fs.unlinkSync(`./assets/sticker/${q}.webp`)
 replygc(`Success deleting sticker ${q}`)
 }
 break
@@ -3491,8 +3679,8 @@ if (args.length < 1) return replygc('Whats the audio name?')
 if (VoiceNoteXeon.includes(q)) return replygc("The name is already in use")
 let delb = await OctopusBotzz.downloadAndSaveMediaMessage(quoted)
 VoiceNoteXeon.push(q)
-await fsx.copy(delb, `./XeonMedia/audio/${q}.mp3`)
-fs.writeFileSync('./XeonMedia/database/xeonvn.json', JSON.stringify(VoiceNoteXeon))
+await fsx.copy(delb, `./assets/audio/${q}.mp3`)
+fs.writeFileSync('./assets/database/xeonvn.json', JSON.stringify(VoiceNoteXeon))
 fs.unlinkSync(delb)
 replygc(`Success Adding Audio\nCheck by typing ${prefix}listvn`)
 }
@@ -3503,8 +3691,8 @@ if (args.length < 1) return replygc('Enter the vn name')
 if (!VoiceNoteXeon.includes(q)) return replygc("The name does not exist in the database")
 let wanu = VoiceNoteXeon.indexOf(q)
 VoiceNoteXeon.splice(wanu, 1)
-fs.writeFileSync('./XeonMedia/database/xeonvn.json', JSON.stringify(VoiceNoteXeon))
-fs.unlinkSync(`./XeonMedia/audio/${q}.mp3`)
+fs.writeFileSync('./assets/database/xeonvn.json', JSON.stringify(VoiceNoteXeon))
+fs.unlinkSync(`./assets/audio/${q}.mp3`)
 replygc(`Success deleting vn ${q}`)
 }
 break
@@ -3572,12 +3760,12 @@ replygc("Error!")
 }
 }
 break
-case 'snobg': {
+case 'snobg': case 'stickernobackground': {
 if (!quoted) return replygc(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
 if (/image/.test(mime)) {
 let media = await OctopusBotzz.downloadAndSaveMediaMessage(quoted)
-let encmedia = await OctopusBotzz.sendImageAsSticker(m.chat, await rmbg(media), m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
+let stickernya = await OctopusBotzz.sendImageAsSticker(m.chat, await rmbg(media), m, { packname: global.packname, author: global.author })
+await fs.unlinkSync(stickernya)
 } else {
 replygc(`Send/Reply Images With Captions ${prefix+command}`)
 }
@@ -3923,15 +4111,18 @@ break
 case 'sticker': 
 case 's': {
 
+const media = await quoted.download()
+const bentar = `Proses nihh bikin stickernya`
+ 
+
 if (/image/.test(mime)) {
-let media = await quoted.download()
-let encmedia = await OctopusBotzz.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
+
+reply(bentar)
+await OctopusBotzz.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
 } else if (/video/.test(mime)) {
-if ((quoted.msg || quoted).seconds > 11) return replygc('Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds')
-let media = await quoted.download()
-let encmedia = await OctopusBotzz.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
+
+reply(bentar)
+await OctopusBotzz.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
 } else {
 reply(`Kirim/Reply Gambar/Video/Gif dengan caption ${prefix+command}\ndurasi video untuk pemvuatan sticker maximal 1-9 detik`)
 }
@@ -4038,7 +4229,7 @@ isForwarded: true,
 "body": `${ownername}`,
 "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": fs.readFileSync(`./XeonMedia/theme/oct.jpg`),
+"thumbnail": fs.readFileSync(`./assets/theme/oct.jpg`),
 "sourceUrl": `${wagc}`}}},
 { quoted: m})
 }
@@ -4358,117 +4549,6 @@ let dehe = await photooxy.photoOxy(link, q)
 OctopusBotzz.sendMessage(m.chat, { image: { url: dehe }, caption: `${mess.success}` }, { quoted: m })
 }
 break
-case 'tiktokgirl':
-replygc(mess.wait)
-var asupan = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/tiktokgirl.json'))
-var hasil = pickRandom(asupan)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktokghea':
-replygc(mess.wait)
-var gheayubi = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/gheayubi.json'))
-var hasil = pickRandom(gheayubi)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktokbocil':
-replygc(mess.wait)
-var bocil = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/bocil.json'))
-var hasil = pickRandom(bocil)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktoknukhty':
-replygc(mess.wait)
-var ukhty = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/ukhty.json'))
-var hasil = pickRandom(ukhty)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktoksantuy':
-replygc(mess.wait)
-var santuy = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/santuy.json'))
-var hasil = pickRandom(santuy)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktokkayes':
-replygc(mess.wait)
-var kayes = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/kayes.json'))
-var hasil = pickRandom(kayes)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktokpanrika':
-replygc(mess.wait)
-var rikagusriani = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/panrika.json'))
-var hasil = pickRandom(rikagusriani)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'tiktoknotnot':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokvids/notnot.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, video: { url: hasil.url }}, { quoted: m })
-break
-case 'chinese':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/china.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'hijab':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/hijab.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'indo':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/indonesia.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'japanese':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/japan.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'korean':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/korea.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'malay':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/malaysia.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'randomgirl':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/random.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'randomboy':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/random2.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'thai':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/thailand.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'vietnamese':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/tiktokpics/vietnam.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'aesthetic':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/randompics/aesthetic.json'))
 var hasil = pickRandom(notnot)
 OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
 break
@@ -4517,24 +4597,6 @@ break
 case 'justina':
 replygc(mess.wait)
 var notnot = JSON.parse(fs.readFileSync('./HostMedia/randompics/justina.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'kayes':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/randompics/kayes.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'kpop':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/randompics/kpop.json'))
-var hasil = pickRandom(notnot)
-OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
-break
-case 'notnot':
-replygc(mess.wait)
-var notnot = JSON.parse(fs.readFileSync('./HostMedia/randompics/notnot.json'))
 var hasil = pickRandom(notnot)
 OctopusBotzz.sendMessage(m.chat, { caption: mess.success, image: { url: hasil.url } }, { quoted: m })
 break
@@ -4641,107 +4703,107 @@ case 'akira': case 'akiyama': case 'ana': case 'art': case 'asuna': case 'ayuzaw
 if (!isPrem) return replyprem(mess.premium)
 replygc(mess.wait)
 let heyy
-if (/akira/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/akira.json')
-if (/akiyama/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/akiyama.json')
-if (/ana/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/ana.json')
-if (/art/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/art.json')
-if (/asuna/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/asuna.json')
-if (/ayuzawa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/ayuzawa.json')
-if (/boneka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/boneka.json')
-if (/boruto/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/boruto.json')
-if (/bts/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/bts.json')
-if (/cecan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cecan.json')
-if (/chiho/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/chiho.json')
-if (/chitoge/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/chitoge.json')
-if (/cogan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cogan.json')
-if (/cosplay/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cosplay.json')
-if (/cosplayloli/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cosplayloli.json')
-if (/cosplaysagiri/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cosplaysagiri.json')
-if (/cyber/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/cyber.json')
-if (/deidara/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/deidara.json')
-if (/doraemon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/doraemon.json')
-if (/eba/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/eba.json')
-if (/elaina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/elaina.json')
-if (/emilia/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/emilia.json')
-if (/erza/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/erza.json')
-if (/exo/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/exo.json')
-if (/femdom/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/femdom.json')
-if (/freefire/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/freefire.json')
-if (/gamewallpaper/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/gamewallpaper.json')
-if (/glasses/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/glasses.json')
-if (/gremory/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/gremory.json')
-if (/hacker/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/hekel.json')
-if (/hestia/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/hestia.json')
-if (/husbu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/husbu.json')
-if (/inori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/inori.json')
-if (/islamic/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/islamic.json')
-if (/isuzu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/isuzu.json')
-if (/itachi/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/itachi.json')
-if (/itori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/itori.json')
-if (/jennie/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/jeni.json')
-if (/jiso/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/jiso.json')
-if (/justina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/justina.json')
-if (/kaga/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kaga.json')
-if (/kagura/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kagura.json')
-if (/kakasih/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kakasih.json')
-if (/kaori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kaori.json')
-if (/cartoon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kartun.json')
-if (/shortquote/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/katakata.json')
-if (/keneki/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/keneki.json')
-if (/kotori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kotori.json')
-if (/kpop/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kpop.json')
-if (/kucing/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kucing.json')
-if (/kurumi/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/kurumi.json')
-if (/lisa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/lisa.json')
-if (/loli/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/loli.json')
-if (/madara/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/madara.json')
-if (/megumin/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/megumin.json')
-if (/mikasa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/mikasa.json')
-if (/mikey/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/mikey.json')
-if (/miku/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/miku.json')
-if (/minato/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/minato.json')
-if (/mobile/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/mobil.json')
-if (/motor/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/motor.json')
-if (/mountain/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/mountain.json')
-if (/naruto/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/naruto.json')
-if (/neko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/neko.json')
-if (/neko2/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/neko2.json')
-if (/nekonime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/nekonime.json')
-if (/nezuko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/nezuko.json')
-if (/onepiece/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/onepiece.json')
-if (/pentol/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/pentol.json')
-if (/pokemon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/pokemon.json')
-if (/profil/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/profil.json')
-if (/progamming/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/programming.json')
-if (/pubg/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/pubg.json')
-if (/randblackpink/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/randblackpink.json')
-if (/randomnime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/randomnime.json')
-if (/randomnime2/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/randomnime2.json')
-if (/rize/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/rize.json')
-if (/rose/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/rose.json')
-if (/ryujin/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/ryujin.json')
-if (/sagiri/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/sagiri.json')
-if (/sakura/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/sakura.json')
-if (/sasuke/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/sasuke.json')
-if (/satanic/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/satanic.json')
-if (/shina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/shina.json')
-if (/shinka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/shinka.json')
-if (/shinomiya/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/shinomiya.json')
-if (/shizuka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/shizuka.json')
-if (/shota/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/shota.json')
-if (/space/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/tatasurya.json')
-if (/technology/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/technology.json')
-if (/tejina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/tejina.json')
-if (/toukachan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/toukachan.json')
-if (/tsunade/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/tsunade.json')
-if (/waifu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/waifu.json')
-if (/wallhp/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/wallhp.json')
-if (/wallml/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/wallml.json')
-if (/wallmlnime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/wallnime.json')
-if (/yotsuba/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/yotsuba.json')
-if (/yuki/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/yuki.json')
-if (/yulibocil/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/yulibocil.json')
-if (/yumeko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/XeonMedia/master/yumeko.json')
+if (/akira/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/akira.json')
+if (/akiyama/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/akiyama.json')
+if (/ana/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/ana.json')
+if (/art/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/art.json')
+if (/asuna/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/asuna.json')
+if (/ayuzawa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/ayuzawa.json')
+if (/boneka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/boneka.json')
+if (/boruto/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/boruto.json')
+if (/bts/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/bts.json')
+if (/cecan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cecan.json')
+if (/chiho/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/chiho.json')
+if (/chitoge/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/chitoge.json')
+if (/cogan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cogan.json')
+if (/cosplay/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cosplay.json')
+if (/cosplayloli/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cosplayloli.json')
+if (/cosplaysagiri/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cosplaysagiri.json')
+if (/cyber/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/cyber.json')
+if (/deidara/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/deidara.json')
+if (/doraemon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/doraemon.json')
+if (/eba/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/eba.json')
+if (/elaina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/elaina.json')
+if (/emilia/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/emilia.json')
+if (/erza/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/erza.json')
+if (/exo/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/exo.json')
+if (/femdom/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/femdom.json')
+if (/freefire/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/freefire.json')
+if (/gamewallpaper/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/gamewallpaper.json')
+if (/glasses/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/glasses.json')
+if (/gremory/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/gremory.json')
+if (/hacker/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/hekel.json')
+if (/hestia/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/hestia.json')
+if (/husbu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/husbu.json')
+if (/inori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/inori.json')
+if (/islamic/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/islamic.json')
+if (/isuzu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/isuzu.json')
+if (/itachi/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/itachi.json')
+if (/itori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/itori.json')
+if (/jennie/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/jeni.json')
+if (/jiso/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/jiso.json')
+if (/justina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/justina.json')
+if (/kaga/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kaga.json')
+if (/kagura/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kagura.json')
+if (/kakasih/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kakasih.json')
+if (/kaori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kaori.json')
+if (/cartoon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kartun.json')
+if (/shortquote/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/katakata.json')
+if (/keneki/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/keneki.json')
+if (/kotori/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kotori.json')
+if (/kpop/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kpop.json')
+if (/kucing/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kucing.json')
+if (/kurumi/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/kurumi.json')
+if (/lisa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/lisa.json')
+if (/loli/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/loli.json')
+if (/madara/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/madara.json')
+if (/megumin/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/megumin.json')
+if (/mikasa/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/mikasa.json')
+if (/mikey/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/mikey.json')
+if (/miku/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/miku.json')
+if (/minato/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/minato.json')
+if (/mobile/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/mobil.json')
+if (/motor/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/motor.json')
+if (/mountain/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/mountain.json')
+if (/naruto/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/naruto.json')
+if (/neko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/neko.json')
+if (/neko2/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/neko2.json')
+if (/nekonime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/nekonime.json')
+if (/nezuko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/nezuko.json')
+if (/onepiece/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/onepiece.json')
+if (/pentol/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/pentol.json')
+if (/pokemon/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/pokemon.json')
+if (/profil/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/profil.json')
+if (/progamming/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/programming.json')
+if (/pubg/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/pubg.json')
+if (/randblackpink/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/randblackpink.json')
+if (/randomnime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/randomnime.json')
+if (/randomnime2/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/randomnime2.json')
+if (/rize/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/rize.json')
+if (/rose/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/rose.json')
+if (/ryujin/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/ryujin.json')
+if (/sagiri/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/sagiri.json')
+if (/sakura/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/sakura.json')
+if (/sasuke/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/sasuke.json')
+if (/satanic/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/satanic.json')
+if (/shina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/shina.json')
+if (/shinka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/shinka.json')
+if (/shinomiya/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/shinomiya.json')
+if (/shizuka/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/shizuka.json')
+if (/shota/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/shota.json')
+if (/space/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/tatasurya.json')
+if (/technology/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/technology.json')
+if (/tejina/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/tejina.json')
+if (/toukachan/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/toukachan.json')
+if (/tsunade/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/tsunade.json')
+if (/waifu/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/waifu.json')
+if (/wallhp/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/wallhp.json')
+if (/wallml/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/wallml.json')
+if (/wallmlnime/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/wallnime.json')
+if (/yotsuba/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/yotsuba.json')
+if (/yuki/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/yuki.json')
+if (/yulibocil/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/yulibocil.json')
+if (/yumeko/.test(command)) heyy = await fetchJson('https://raw.githubusercontent.com/DGXeon/assets/master/yumeko.json')
 let yeha = heyy[Math.floor(Math.random() * heyy.length)];
 OctopusBotzz.sendMessage(m.chat, { image: { url: yeha }, caption : mess.success }, { quoted: m })
 }
@@ -4856,23 +4918,59 @@ replygc(util.format(JSON.parse(res.data.replace("for (;;);", ""))))
 }
 
 break
-case 'pushcontact': {
+case 'pushcontact': case 'dr': {
+
     if (!isCreator) return replygc(mess.owner)
-      if (!m.isGroup) return replygc(`The feature works only in grup`)
+    if (!m.isGroup) return replygc(`Fitur ini hanya berfungsi di grup!`)
     if (!text) return replygc(`text?`)
-    let mem = await participants.filter(v => v.id.endsWith('.net')).map(v => v.id)
-    replygc(`Success in pushing the message to contacts`)
-    for (let pler of mem) {
-    OctopusBotzz.sendMessage(pler, { text: q})
-     }  
-     replygc(`Done`)
-      }
-      break
-            case 'id':{
-            replygc2(from)
-           }
-          break
-          case 'emojimix': {
+    
+    const fs = require('fs');
+
+// Fungsi untuk menyimpan kontak ke dalam file
+function simpanKontak(namaFile, kontakData) {
+  fs.appendFile(namaFile, kontakData, (err) => {
+    if (err) {
+      console.error(`Gagal menyimpan kontak dalam file ${namaFile}:`, err);
+    } else {
+      console.log(`Kontak berhasil ditambahkan ke dalam file "${namaFile}"`);
+    }
+  })
+}
+// Data kontak yang ingin disimpan dalam format VCF (vCard)
+    let me = m.sender
+    let nox = `${me.split('@')[0]}`
+    let kontakData = `BEGIN:VCARD
+VERSION:3.0
+FN:Pushkontak: ${pushname}
+TEL:${nox}
+END:VCARD`
+// Lokasi dan nama file untuk menyimpan kontak
+    let namaFile = 'kontak.vcf';
+    let gagal = `Terjadi kesalahan, gagal menyimpan kontak!`
+    let berhasil = `Kontak berhasil disimpan dalam file "${namaFile}"\nTunggu beberapa saat, kami akan mengirim file ke private chat`
+    
+    let member = await participants.filter(v => v.id.endsWith('.net')).map(v => v.id)
+    simpanKontak(namaFile, kontakData);
+
+    for (let org of member) {
+    let me = m.sender
+    let nox = `+${me.split('@')[0]}`
+    //OctopusBotzz.sendMessage(org, { text: q})
+    }
+    OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { document : { url : "./kontak.vcf"}, fileName : namaFile, mimetype: "vcf" }, { quoted : m })
+    //reply(`Done`)
+}
+break
+case 'id': {
+  reply(from)
+}
+break
+case 'id2': {
+  let me = m.sender
+  reply(`${me.split('@')[0]}`)
+}
+break
+case 'emojimix': {
 		let [emoji1, emoji2] = text.split`+`
 		if (!emoji1) return replygc(`Example : ${prefix + command} 😅+🤔`)
 		if (!emoji2) return replygc(`Example : ${prefix + command} 😅+🤔`)
@@ -4991,7 +5089,7 @@ break
   }
  break
 case 'git': case 'gitclone':
-if (!args[0]) return replygc(`Where is the link?\nExample :\n${prefix}${command} https://github.com/DGXeon/XeonMedia`)
+if (!args[0]) return replygc(`Where is the link?\nExample :\n${prefix}${command} https://github.com/DGXeon/assets`)
 if (!isUrl(args[0]) && !args[0].includes('github.com')) return replygc(`Link invalid!!`)
 let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
     let [, user, repo] = args[0].match(regex1) || []
@@ -5163,7 +5261,7 @@ isForwarded: true,
 "body": `${ownername}`,
 "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": fs.readFileSync(`./XeonMedia/theme/oct.jpg`),
+"thumbnail": fs.readFileSync(`./assets/theme/oct.jpg`),
 "sourceUrl": `${wagc}`}}},
 { quoted: m})        
             }
@@ -5187,7 +5285,7 @@ isForwarded: true,
 "body": `${ownername}`,
 "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": fs.readFileSync(`./XeonMedia/theme/oct.jpg`),
+"thumbnail": fs.readFileSync(`./assets/theme/oct.jpg`),
 "sourceUrl": `${wagc}`}}},
 { quoted: m})        
             }

@@ -21,12 +21,13 @@ global.location = "Indonesia" //ur location
 //new
 global.botname = "Octopus MD V2.0.1"
 global.ownernumber = '6281359391296'
+global.raoleh = ["212711997433"]
 global.ownername = 'Sulaiman Majid'
 global.ownerNumber = ["6281359391296@s.whatsapp.net"]
 global.ownerweb = "https://youtube.com/@DGXeon"
 global.websitex = "https://youtu.be/dRjLBzuSsN4"
 global.wagc = "https://chat.whatsapp.com/H5pTRObSv3sAcihLxO0mDF"
-global.themeemoji = '🥀'
+global.themeemoji = '👨🏻‍💻'
 global.wm = "Xeon Bot Inc."
 global.botscript = 'https://github.com/DGXeon/CheemsBot-MD7' //script link
 global.packname = "Sticker By"

@@ -52,7 +52,7 @@ async function OctopusBotzzBot() {
         })
         store.bind(OctopusBotzz.ev)
 
-console.log(color(figlet.textSync(`Cheems`, {
+console.log(color(figlet.textSync(`Octopus`, {
 font: 'Standard',
 horizontalLayout: 'default',
 vertivalLayout: 'default',
@@ -208,8 +208,6 @@ const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
 const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
 let xeonName = num
 messInfo = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀🎉 @${xeonName.split("@")[0]}, Anda telah *dipromosikan* menjadi *admin* 🥳`
-reply(`@${xeonName.split("@")[0]} keluar dari grup ini`)
-/*
 OctopusBotzz.sendMessage(anu.id,
   {
   text: messInfo,
@@ -228,24 +226,29 @@ OctopusBotzz.sendMessage(anu.id,
     }
   }
 )
-*/
 } else if (anu.action == 'demote') {
 const xeontime = moment.tz('Asia/Jakarta').format('HH:mm:ss')
 const xeondate = moment.tz('Asia/Jakarta').format('DD/MM/YYYY')
 let xeonName = num
 messInfo = `𝗢𝗼𝗽𝘀‼️ @${xeonName.split("@")[0]}, kamu telah *diturunkan* dari *admin* 😬`
 OctopusBotzz.sendMessage(anu.id,
- { text: messInfo,
- contextInfo:{
- mentionedJid:[num],
- "externalAdReply": {"showAdAttribution": true,
- "containsAutoReply": true,
- "title": ` ${botname}`,
-"body": `${ownername}`,
- "previewType": "PHOTO",
-"thumbnailUrl": ``,
-"thumbnail": pepeUsr,
-"sourceUrl": `${wagc}`}}})
+  {
+  text: messInfo,
+    contextInfo:{
+      mentionedJid:[num],
+      "externalAdReply": {
+        "showAdAttribution": true,
+        "containsAutoReply": true,
+        "title": ` ${botname}`,
+        "body": `${ownername}`,
+        "previewType": "PHOTO",
+        "thumbnailUrl": ``,
+        "thumbnail": pepeUsr,
+        "sourceUrl": `${wagc}`
+      }
+    }
+  }
+)
 }
 }
 } catch (err) {

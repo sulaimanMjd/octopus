@@ -1483,8 +1483,8 @@ break
 case "igimg": case "instaimg": {
 if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
 reply(mess.wait)
-const { instaDl } = require('./lib/downloader')
-const risponsxeon = await instaDl(text)
+const { XeonIgImg } = require('./lib/XeonIgImg')
+const risponsxeon = await XeonIgImg(text)
 for (let i=0;i<risponsxeon.length;i++) {
 let ghd = await OctopusBotzz.sendFileUrl(m.chat, risponsxeon[i], `Here you go!`, m)
 }

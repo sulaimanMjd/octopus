@@ -9,7 +9,7 @@ global.doc4 = 'application/zip'
 global.doc5 = 'application/pdf'
 global.doc6 = 'application/vnd.android.package-archive'
 
-//owmner v card
+//owner v card
 global.owner = ['6281359391296'] //ur owner number
 global.ownernomer = "6281359391296" //ur owner number2
 global.ownername = "Sulaiman Majid" //ur owner name
@@ -19,9 +19,8 @@ global.socialm = "GitHub: Sulaiman0851" //ur github or insta name
 global.location = "Indonesia" //ur location
 
 //new
-global.botname = "Octopus MD V2.0.1"
+global.botname = "Octopus MD V2.1.1"
 global.ownernumber = '6281359391296'
-global.raoleh = ["212711997433"]
 global.ownername = 'Sulaiman Majid'
 global.ownerNumber = ["6281359391296@s.whatsapp.net"]
 global.ownerweb = "https://youtube.com/@DGXeon"
@@ -48,7 +47,13 @@ global.fluming = 'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutpu
 global.flarun = 'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=runner-logo&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&text='
 global.flasmurf = 'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=smurfs-logo&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&text='
 
-//messages
+// limited feature
+if (global.limit === undefined) {
+  console.log("Peringatan: Nilai global.limit belum ditentukan.");
+  global.limit = 10; // Nilai default jika belum ditentukan
+}
+
+// messages
 global.mess = {
     success: 'Suksess kak...',
     admin: 'Fitur ini hanya dapat digunakan oleh admin!',

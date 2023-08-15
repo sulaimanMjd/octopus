@@ -81,6 +81,7 @@ try {
         const XeonTheDeveloper = m.sender == botNumber ? true : false
         const text = q = args.join(" ")
         const quoted = m.quoted ? m.quoted : m
+        const qmsg = (quoted.msg || quoted)
         const mime = (quoted.msg || quoted).mimetype || ''
         const isMedia = /image|video|sticker|audio/.test(mime)
         const isImage = (type == 'imageMessage')
@@ -1598,7 +1599,7 @@ case 'listcmd': {
 Info: *bold* hash is Locked
 ${Object.entries(global.db.sticker).map(([key, value], index) => `${index + 1}. ${value.locked ? `*${key}*` : key} : ${value.text}`).join('\n')}
 `.trim()
-                XeonBotInc.sendText(m.chat, teks, m, { mentions: Object.values(global.db.sticker).map(x => x.mentionedJid).reduce((a,b) => [...a, ...b], []) })
+                OctopusBotzz.sendText(m.chat, teks, m, { mentions: Object.values(global.db.sticker).map(x => x.mentionedJid).reduce((a,b) => [...a, ...b], []) })
             }
 break 
 case 'lockcmd': {
@@ -1730,6 +1731,66 @@ if (isHexadecimal(hexValue)) {
 
 }
 break
+case 'htobin': {
+
+function isValidHex(hex) {
+  const hexRegex = /^[0-9A-Fa-f]+$/;
+  return hexRegex.test(hex);
+}
+
+function hexToBinary(hex) {
+  let binary = '';
+  for (let i = 0; i < hex.length; i++) {
+    const char = hex[i];
+    const value = parseInt(char, 16);
+    const binaryValue = value.toString(2).padStart(4, '0');
+    binary += binaryValue;
+  }
+  return binary;
+}
+
+//variabel nilai inputan dari pesan teks user
+const hexValue = text;
+
+if (isValidHex(hexValue)) {
+  const binaryValue = hexToBinary(hexValue);
+  reply(`Hexadecimal ${hexValue} dalam bentuk biner adalah: ${binaryValue}`);
+} else {
+  reply('Nilai heksadesimal salah, mohon periksa kembali!');
+}
+
+}
+break
+case 'btohex': {
+
+function isValidBinary(binary) {
+  const binaryRegex = /^[0-1]+$/;
+  return binaryRegex.test(binary);
+}
+
+function binaryToHex(binary) {
+  let hex = '';
+  for (let i = 0; i < binary.length; i += 4) {
+    const chunk = binary.substr(i, 4);
+    const value = parseInt(chunk, 2);
+    const hexValue = value.toString(16).toUpperCase();
+    hex += hexValue;
+  }
+  return hex;
+}
+
+//variabel nilai inputan dari pesan teks user
+const binaryValue = text;
+
+if (isValidBinary(binaryValue)) {
+  const hexValue = binaryToHex(binaryValue);
+  reply(`Biner ${binaryValue} dalam bentuk heksadesimal adalah: ${hexValue}`);
+} else {
+  reply('Nilai biner salah, mohon periksa kembali!');
+}
+
+}
+break
 case 'jadwaltkj': case 'jtkj':
   
   OctopusBotzz.sendMessage(m.chat, { image: { url : 'https://telegra.ph/file/37bc1fcd702101fa99f70.jpg' }, caption: 
@@ -1819,22 +1880,49 @@ reply("aman tod")
 }
 break
 case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
-	        //const qmsg = (quoted.msg || quoted)
 	        let replay = `Kirim/reply image/sticker dengan caption ${prefix + command} text1|text2`
-	        if (!/image/.test(mime)) return replay
-            if (!text) return replay
+	        if (!/image/.test(mime)) return reply(replay)
+            if (!text) return reply(replay)
 	        m.reply(mess.wait)
             atas = text.split('|')[0] ? text.split('|')[0] : '-'
             bawah = text.split('|')[1] ? text.split('|')[1] : '-'
-	        //let dwnld = await OctopusBotzz.downloadAndSaveMediaMessage(qmsg)
-	        let dwnld = await OctopusBotzz.downloadAndSaveMediaMessage(mime)
+            const kode = {
+	          atasx: encodeURIComponent(atas),
+	          bawahx: encodeURIComponent(bawah)
+	        };
+            
 	        let { TelegraPh } = require('./lib/toUrl')
-	        let mediaX = await TelegraPh(dwnld)
-	        let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${mediaX}`
-	        let sticNya = await OctopusBotzz.sendImageAsSticker(m.chat, smeme, fdoc, { packname: global.packname, author: global.auhor })
-	        await fs.unlinkSync(sticNya)
+	        let upToLink = await OctopusBotzz.downloadAndSaveMediaMessage(qmsg)
+	        let mediaX = await TelegraPh(upToLink)
+	        
+	        let smeme = `https://api.memegen.link/images/custom/${kode.atasx}/${kode.bawahx}.png?background=${mediaX}`
+	        await OctopusBotzz.sendVideoAsSticker(m.chat, smeme, m, { packname: global.packname, author: global.author })
+	        await fs.unlinkSync(upToLink)
+	        
 }
 break
+case "igvid": case "instavid": {
+if (!text) return replygcxeon(`Where is the link?\n\nExample : ${prefix + command} https://www.instagram.com/reel/Ctjt0srIQFg/?igshid=MzRlODBiNWFlZA==`)
+XeonStickWait()
+const { instaDl } = require('./lib/downloader')
+let dataMedia = await instaDl(text)
+const media = await OctopusBotzz.sendMessage(m.chat,{video:{url: dataMedia[0].url},caption: mess.success},{quoted:m})
+fs.unlinkSync(media)
+}
+break
+case "igimg": case "instaimg":  {
+if (!text) return replygcxeon(`Where is the link?\n\nExample : ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
+XeonStickWait()
+const instaDl = require('./lib/downloader')
+const risponsxeon = await instaDl(text)
+for (let i=0;i<risponsxeon.length;i++) {
+let media = await OctopusBotzz.sendFileUrl(m.chat, risponsxeon[i], mess.success, m)
+}
+}
+break
+
+
+
 
                                // Ori Feature //
 case 'public': {
@@ -1930,6 +2018,7 @@ case 'alive': case 'panel': case 'list': case 'menu': case 'help': case '?': {
 │✑  Given *BELOW*
 ┌─────────────┈ ⳹
 │❏${prefix}newfeature ( FITUR BARU🔥🤩🥳✨ )
+┆❏${prefix}math
 │❏${prefix}allmenu
 │❏${prefix}downloadmenu
 │❏${prefix}funmenu
@@ -1969,7 +2058,28 @@ break
 case 'newfeature': {
 let namaThumb = await getBuffer(picak+'New Feature')
 sendOctopusBotzzMessage(from, { 
-text: `Hi @${sender.split("@")[0]}\n\n${newfeature(prefix, hituet)}`,
+text: `Hi @${sender.split("@")[0]}\n\n${newfeature(prefix)}`,
+mentions:[sender],
+contextInfo:{
+mentionedJid:[sender],
+"externalAdReply": {
+"showAdAttribution": true,
+"renderLargerThumbnail": true,
+"title": botname, 
+"containsAutoReply": true,
+"mediaType": 1, 
+"thumbnail": namaThumb,
+"mediaUrl": `${wagc}`,
+"sourceUrl": `${wagc}`
+}
+}
+})
+}
+break
+case 'math': {
+let namaThumb = await getBuffer(picak+'Math')
+sendOctopusBotzzMessage(from, { 
+text: `Hi @${sender.split("@")[0]}\n\n${math(prefix)}`,
 mentions:[sender],
 contextInfo:{
 mentionedJid:[sender],
@@ -3384,6 +3494,10 @@ break
 case 'tiktok': {
   if (!text) return reply(`Example : ${prefix + command} link`)
   if (!q.includes('tiktok')) return replygc(`Link Invalid!!`)
+  
+  //if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // response when limit runs out
+  //db.data.users[m.sender].limit -= 1 // -1 limit
+  
   replygc(mess.wait)
   const { tiktokDl } = require("./lib/downloader")
   const hasil = await tiktokDl(text)
@@ -3433,7 +3547,7 @@ break
 case 'happymod':{
 if (!q) return replygc(`Example ${prefix+command} Sufway surfer mod`)
 replygc(mess.wait)
-
+/*
 let google = require('google-it')
 google({'query': text}).then(res => {
 let teks = `Google Search From : ${text}\n\n`
@@ -3445,9 +3559,9 @@ teks += `⭔ *Link* : ${g.link}\n\n───────────────
 replygc(teks)
 })
 
-let haMod = require('./scrape/scraper') 
-let haMod = await scp1.happymod(q)
-haMod({'': text}).then
+let haMod = require('./scrape/scraper')*/
+let haMod = await scp1.happymod(q)/*
+haMod({'': text}).then*/
 
 replygc(util.format(haMod))
 }
@@ -3553,9 +3667,11 @@ fs.unlinkSync(hasilmp3.path)
 break
 case 'ytmp4': case 'ytvideo': {
 if (!text) replygc(`Where is the link??\n\nExample : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27`)
-if (!args[0].includes('youtube.com')) {
-return reply(`Terjadi kesalahan!\nMohon cek kembali & sertakan link youtube yang valid!`)
-} else {
+const yete = {
+link1: 'youtube.com',
+link2: 'youtu.be'
+}
+if (args[0].includes(yete.link1 && yete.link2)) {
 const downVid = require('./lib/ytdl2')
 const vid = await downVid.mp4(text)
 const capt = `
@@ -3563,10 +3679,14 @@ const capt = `
 *${themeemoji}Date:* ${vid.date}
 *${themeemoji}Duration:* ${vid.duration}
 *${themeemoji}Quality:* ${vid.quality}`
+reply(mess.wait)
 await OctopusBotzz.sendMessage(m.chat,{
     video: {url:vid.videoUrl},
     caption: capt
 },{quoted:m})
+fs.unlinkSync(vid)
+} else {
+reply(`Terjadi kesalahan!\nMohon cek kembali & sertakan link youtube yang valid!`)
 }
 }
 break
@@ -5447,13 +5567,30 @@ OctopusBotzz.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 }
 
 } catch (err) {
-console.log(util.format(err))
-//let e = String(err)
-OctopusBotzz.sendMessage("6281359391296@s.whatsapp.net", { text: `*Ada yang error nih...\nError:*\n\n${util.format(err)}`, 
-contextInfo:{
-forwardingScore: 9999999, 
-isForwarded: true
-}})
+  if (err.code === 'ENOSPC') {
+    console.log('Ruang tidak tersedia.');
+    OctopusBotzz.sendMessage("6281359391296@s.whatsapp.net",
+      {
+        text: `**Ruang tidak tersedia!*\n\n${util.format(err)}`,
+          contextInfo:{
+            forwardingScore: 9999999, 
+            isForwarded: true
+          }
+      }
+    )
+  } else {
+    console.log('Terjadi kesalahan:', err.message);
+    //console.log(util.format(err))
+    OctopusBotzz.sendMessage("6281359391296@s.whatsapp.net",
+      {
+        text:  `**Ada yang error nih...*\n*Error:*\n\n${util.format(err)}`,
+          contextInfo:{
+            forwardingScore: 9999999, 
+            isForwarded: true
+          }
+      }
+    )
+  }
 }
 }
 

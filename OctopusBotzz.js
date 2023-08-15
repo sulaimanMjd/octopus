@@ -1480,11 +1480,11 @@ let octoHasil = await igevid(text)
 OctopusBotzz.sendMessage(m.chat,{video:{url: octoHasil.url[0].url},caption: mess.success},{quoted:m})
 }
 break
-case "igimg": case "instaimg":  {
+case "igimg": case "instaimg": {
 if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
 reply(mess.wait)
-const { XeonIgImg } = require('./lib/downloader')
-const risponsxeon = await XeonIgImg(text)
+const { instaDl } = require('./lib/downloader')
+const risponsxeon = await instaDl(text)
 for (let i=0;i<risponsxeon.length;i++) {
 let ghd = await OctopusBotzz.sendFileUrl(m.chat, risponsxeon[i], `Here you go!`, m)
 }
@@ -1659,7 +1659,7 @@ case 'dtobin': {
   return binary;
 }
 
-  const decimalNumber = text; // Ganti dengan angka desimal yang ingin diubah
+  const decimalNumber = text; //variabel nilai inputan dari pesan teks user
   const binaryResult = decimalToBinary(decimalNumber);
   reply(`Nilai biner dari ${decimalNumber} adalah ${binaryResult}`);
 //console.log(`Angka desimal ${decimalNumber} dalam bentuk biner adalah: ${binaryResult}`);
@@ -1669,7 +1669,7 @@ case 'dtobin': {
 break
 case 'btodec': {
   
-  const binaryString = text; // Ganti dengan kode biner yang ingin Anda konversi
+  const binaryString = text;
   // Fungsi untuk mengonversi biner ke desimal
   function binaryToDecimal(binaryString) {
     const regex = /^[01]+$/; // RegEx untuk memeriksa apakah string hanya terdiri dari 0 dan 1
@@ -1701,7 +1701,7 @@ function isValidDecimalInput(input) {
   return /^\d+$/.test(input);
 }
 
-const decimalValue = text; // Ganti dengan nilai desimal yang ingin Anda konversi
+const decimalValue = text; //variabel nilai inputan dari pesan teks user
 
 if (isValidDecimalInput(decimalValue)) {
   const hexValue = decimalToHex(parseInt(decimalValue));
@@ -1721,7 +1721,7 @@ function isHexadecimal(hex) {
   const hexRegex = /^[0-9A-Fa-f]+$/;
   return hexRegex.test(hex);
 }
-const hexValue = text; // Ganti dengan nilai heksadesimal yang ingin Anda konversi
+const hexValue = text;
 if (isHexadecimal(hexValue)) {
   const decimalValue = hexToDecimal(hexValue);
   reply(`Nilai heksadesimal ${hexValue} setara dengan nilai desimal ${decimalValue}`);

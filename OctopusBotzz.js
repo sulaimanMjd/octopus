@@ -3609,7 +3609,7 @@ case 'ytplay':{
 if (!text) return replygc(`Example : ${prefix+command} story wa anime`)
 replygc(mess.wait)
 let search = await yts(text)
-url = search.videos[0].url
+//url = search.videos[0].url
 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
 thumb = await getBuffer(anu.thumbnail)
 owned = `${ownernumber}@s.whatsapp.net`
@@ -3625,6 +3625,7 @@ Link : ${anu.url}
 
 Copy the link above and type the .ytmp3 link for audio and the .ytmp4 link for video`
 OctopusBotzz.sendMessage(m.chat, { image : thumb, caption: tekes }, { quoted: m})
+
 }
 break
 case 'play':  case 'song': case 'ytmp3': {
@@ -4296,7 +4297,7 @@ if (/image/.test(mime)) {
   } else {
   reply(`Kirim/Reply Gambar/Video/Gif dengan caption ${prefix+command}\ndurasi video untuk pemvuatan sticker maximal 1-9 detik`)
 }
-fs.unlinkSync(media)
+fs.unlinkSync(undifined.jpg)
 }
 break
 case 'stupid':

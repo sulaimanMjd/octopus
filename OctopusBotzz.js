@@ -1475,16 +1475,16 @@ break
 case "igvid": case "instavid": {
 if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
 reply(mess.wait)
-const { igevid } = require('./lib/mediafire')
-let octoHasil = await igevid(text)
+const { instaDl } = require('./lib/downloader')
+let octoHasil = await instaDl(text)
 OctopusBotzz.sendMessage(m.chat,{video:{url: octoHasil.url[0].url},caption: mess.success},{quoted:m})
 }
 break
 case "igimg": case "instaimg": {
 if (!text) return replygc(`Masukkan tautannya!\n\nContoh: ${prefix + command} https://www.instagram.com/p/Cs8x1ljt_D9/?igshid=MzRlODBiNWFlZA==`)
 reply(mess.wait)
-const { XeonIgImg } = require('./lib/XeonIgImg')
-const risponsxeon = await XeonIgImg(text)
+const { igImg } = require('./lib/downloader')
+const risponsxeon = await igImg(text)
 for (let i=0;i<risponsxeon.length;i++) {
 let ghd = await OctopusBotzz.sendFileUrl(m.chat, risponsxeon[i], `Here you go!`, m)
 }
@@ -2018,7 +2018,7 @@ case 'alive': case 'panel': case 'list': case 'menu': case 'help': case '?': {
 │✑  Given *BELOW*
 ┌─────────────┈ ⳹
 │❏${prefix}newfeature ( FITUR BARU🔥🤩🥳✨ )
-┆❏${prefix}math
+│❏${prefix}math
 │❏${prefix}allmenu
 │❏${prefix}downloadmenu
 │❏${prefix}funmenu
@@ -4286,21 +4286,17 @@ case 'sticker':
 case 's': {
 
 const media = await quoted.download()
-const bentar = `Proses nihh bikin stickernya`
- 
 
 if (/image/.test(mime)) {
-
-reply(bentar)
-await OctopusBotzz.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-} else if (/video/.test(mime)) {
-
-reply(bentar)
-await OctopusBotzz.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-} else {
-reply(`Kirim/Reply Gambar/Video/Gif dengan caption ${prefix+command}\ndurasi video untuk pemvuatan sticker maximal 1-9 detik`)
+  reply(`Proses nihh bikin stickernya`)
+  await OctopusBotzz.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
+  } else if (/video/.test(mime)) {
+  reply(bentar)
+  await OctopusBotzz.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
+  } else {
+  reply(`Kirim/Reply Gambar/Video/Gif dengan caption ${prefix+command}\ndurasi video untuk pemvuatan sticker maximal 1-9 detik`)
 }
-
+fs.unlinkSync(media)
 }
 break
 case 'stupid':

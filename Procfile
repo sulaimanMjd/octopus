@@ -1,1 +1,1 @@
-worker: npm i -g pm2 && pm2 link znir066a4zdwsf6 zon9um72krqd7rm && pm2 start index.js
+worker: npm i && npm start

@@ -3672,7 +3672,7 @@ const yete = {
 link1: 'youtube.com',
 link2: 'youtu.be'
 }
-if (args[0].includes(yete.link1 && yete.link2)) {
+if (args[0].includes(yete.link1)) {
 const downVid = require('./lib/ytdl2')
 const vid = await downVid.mp4(text)
 const capt = `
